@@ -150,7 +150,7 @@ class Config
         $saved_post_types = $this->getApplicablePostTypes();
         $content = '<fieldset>';
 
-        foreach (get_post_types() as $post_type) {
+        foreach (get_post_types(['public' => true]) as $post_type) {
             $readable_post_type = get_post_type_object($post_type);
             $checked = '';
             if (in_array($post_type, $saved_post_types)) {
