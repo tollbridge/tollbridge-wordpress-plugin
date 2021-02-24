@@ -25,7 +25,7 @@ $settings_url = admin_url('admin.php?page=tollbridge-paywall-account-settings');
     } elseif (!$manager->accountSettingsCanBeAuthenticated()) {
         ?>
         <div class="error notice">
-            <p>It looks like the <a href="<?php echo $settings_url; ?>">Account Settings</a> you've entered are no longer active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel.</p>
+            <p>It looks like the <a href="<?php echo $settings_url; ?>">Account Settings</a> you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel.</p>
         </div>
         <?php
 

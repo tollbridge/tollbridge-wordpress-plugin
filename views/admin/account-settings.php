@@ -12,8 +12,7 @@ $manager = new \Tollbridge\Paywall\Manager();
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
     <h2>Account Settings</h2>
-    <p>Enter the settings from your Tollbrige.co "Integrations" panel.</p>
-    <p>The "<i>Callback URL</i>"" you need to enter is <strong><?php echo $manager->getCallbackUrl(); ?></strong>.</p>
+    <p>Enter the settings from your Tollbrige "Integrations" panel.</p>
 
     <?php
     if ($manager->allAccountSettingsAreEntered() && !$manager->accountSettingsCanBeAuthenticated()) {
@@ -30,7 +29,20 @@ $manager = new \Tollbridge\Paywall\Manager();
         <?php
         settings_fields('tollbridge_paywall_account_settings');
         do_settings_sections('tollbridge_paywall_account_settings');
-
+        ?>
+        <table class="form-table" role="presentation">
+            <tbody>
+                <tr>
+                    <th scope="row">Callback URL</th>
+                    <td>
+                        <input type="text" size="40" disabled value="<?php echo $manager->getCallbackUrl(); ?>">
+                        <br />
+                        <small><i>Copy this value to the "Callback URL" field in your Tollbridge "Integrations" panel.</i></small>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <?php
         submit_button();
         ?>
     </form>
