@@ -5,3 +5,13 @@
 .menu-top.toplevel_page_tollbridge-paywall .wp-menu-image.dashicons-before > img {
     max-width: 16px;
 }
+
+#tollbridge-metabox .form-table th {
+    padding: 10px 10px 10px 0;
+}
+#tollbridge-metabox .form-table td {
+    padding-top: 0;
+}
+input[name=tollbridge_time_access_delay] {
+    max-width: 30%;
+}

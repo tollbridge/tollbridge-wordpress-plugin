@@ -28,7 +28,9 @@ class Article
             'tollbridge-metabox',
             'Tollbridge Paywall Settings',
             [$this, 'displayArticleMetaBox'],
-            'post'
+            'post',
+            'side',
+            'low'
         );
     }
 

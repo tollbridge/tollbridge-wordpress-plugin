@@ -10,6 +10,8 @@ if ($global_rules_set) {
         <tbody>
             <tr>
                 <th scope="row">Override Global Settings?</th>
+            </tr>
+            <tr>
                 <td>
                     <fieldset>
                         <label>
@@ -54,6 +56,8 @@ $plans = $manager->getActivePlans();
     <tbody>
         <tr class="tollbridge_global_option">
             <th scope="row">Only grant access to these plans</th>
+        </tr>
+        <tr class="tollbridge_global_option">
             <td>
                 <fieldset>
                     <label>
@@ -83,6 +87,8 @@ $plans = $manager->getActivePlans();
         ?>
         <tr>
             <th scope="row">Change paywall access over time</th>
+        </tr>
+        <tr>
             <td>
                 <fieldset>
                     <label>
@@ -107,10 +113,9 @@ $plans = $manager->getActivePlans();
         }
         ?>
         <tr>
-            <th scope="row"></th>
             <td>
                 <label class="tollbridge_time_access_dependent <?php echo $class; ?>">
-                    After <input type="number" name="tollbridge_time_access_delay" value="<?php echo $meta['tollbridge_time_access_delay'][0] ?? 0; ?>" min="0"> days, change articles from:
+                    After <input type="number" name="tollbridge_time_access_delay" value="<?php echo $meta['tollbridge_time_access_delay'][0] ?? 0; ?>" min="0" size="2"> days, change articles from:
                 </label>
             </td>
         </tr>
@@ -119,7 +124,6 @@ $plans = $manager->getActivePlans();
         $direction = $meta['tollbridge_time_access_change_direction'][0] ?? 'to_free';
         ?>
         <tr>
-            <th scope="row"></th>
             <td>
                 <fieldset class="tollbridge_time_access_dependent <?php echo $class; ?>">
                     <label>
