@@ -62,6 +62,10 @@ class Client
             'body' => $data
         ]);
 
+        if (is_wp_error($response)) {
+            throw new ResponseErrorReceivedException("Error code received from remote server: ".$response->get_error_message());
+        }
+
         if ($response['response']['code'] != 200) {
             throw new ResponseErrorReceivedException("Error code ".$response['response']['code']." received from remote server.");
         }
