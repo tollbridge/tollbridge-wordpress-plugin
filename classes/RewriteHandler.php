@@ -24,6 +24,13 @@ class RewriteHandler
             'index.php?'.$this->query_var.'=true',
             'top'
         );
+
+        // With OPCache turned on, rewrites may already be cached.
+        $rules = get_option( 'rewrite_rules' );
+        if (!isset($rules[Manager::AUTHENTICATION_CALLBACK_SLUG.'/?$'])) {
+            global $wp_rewrite;
+            $wp_rewrite->flush_rules();
+        }
     }
 
     public function registerRewriteRuleVar($vars)
