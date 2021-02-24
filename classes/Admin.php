@@ -62,8 +62,8 @@ class Admin
 
         add_submenu_page(
             $this->plugin_name,
-            'Paywall Configuration',
-            'Paywall Configuration',
+            'Paywall Config',
+            'Paywall Config',
             'administrator',
             $this->plugin_name.'-paywall-config',
             [$this, 'displayPaywallConfig']
