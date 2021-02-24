@@ -32,6 +32,24 @@ class Article
             'side',
             'low'
         );
+
+        // Check for a case where a user has already saved a metabox ordering.
+        // If they have an order saved and we add a new box, our box won't appear.
+        $user_id = get_current_user_id();
+        $meta_key = 'meta-box-order_post';
+        $meta_value = get_user_meta($user_id, $meta_key, true );
+        if (!$meta_value || !isset($meta_value['side'])) {
+            return;
+        }
+        $side = array_filter(explode(',', $meta_value['side']));
+        if (in_array('tollbridge-metabox', $side)) {
+            return;
+        }
+
+        $side[] = 'tollbridge-metabox';
+        $meta_value['side'] = implode(',', $side);
+        update_user_meta($user_id, $meta_key, $meta_value);
+
     }
 
 
