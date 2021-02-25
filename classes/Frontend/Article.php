@@ -173,7 +173,6 @@ class Article
             return;
         }
 
-
         $plans = $this->manager->getApplicablePlans($post);
 
         if (empty($plans)) {
