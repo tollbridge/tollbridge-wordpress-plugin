@@ -2,6 +2,7 @@
 
 namespace Tollbridge\Paywall\Frontend;
 
+use WP_Post;
 use Tollbridge\Paywall\Manager;
 use Tollbridge\Paywall\Settings\Config;
 
@@ -47,13 +48,17 @@ class Article
     public function getArticleMeta(int $id)
     {
         $meta = get_post_meta($id);
+        $serialised = [
+            'tollbridge_plans_with_access',
+            'tollbridge_user_types_with_bypass',
+        ];
         $stored = [];
         foreach ($meta as $key => $value) {
             if (!preg_match('#^tollbridge_#', $key)) {
                 continue;
             }
             $stored[$key] = $value[0];
-            if ($key == 'tollbridge_plans_with_access') {
+            if (in_array($key, $serialised)) {
                 $stored[$key] = @unserialize($stored[$key]);
                 if (!is_array($stored[$key])) {
                     $stored[$key] = [];
@@ -113,6 +118,31 @@ class Article
     }
 
 
+    public function getUserTypesWithBypass() : array
+    {
+        if (!isset($this->meta['tollbridge_user_types_with_bypass'])
+            || !is_array($this->meta['tollbridge_user_types_with_bypass'])) {
+            $this->meta['tollbridge_user_types_with_bypass'] = [];
+        }
+
+        return $this->meta['tollbridge_user_types_with_bypass'];
+    }
+
+
+    private function userCanBypassPaywall(WP_Post $post) : bool
+    {
+        if (!is_user_logged_in()) {
+            return false;
+        }
+
+        $meta = get_userdata(get_current_user_id());
+        if (empty($meta->roles)) {
+            return false;
+        }
+
+        return (count(array_intersect($meta->roles, $this->manager->getUserTypesWithBypass($post))) > 0);
+    }
+
     private function isEligibleToShowPaywall() : bool
     {
         if (!is_single()) {
@@ -138,6 +168,11 @@ class Article
             return;
         }
         global $post;
+
+        if ($this->userCanBypassPaywall($post)) {
+            return;
+        }
+
 
         $plans = $this->manager->getApplicablePlans($post);
 

@@ -36,6 +36,17 @@ class Config
         return $existing_plans;
     }
 
+
+    public function getGlobalUserTypesWithByPass()
+    {
+        $bypass_users = get_option('tollbridge_user_types_with_bypass');
+        if (!is_array($bypass_users)) {
+            $bypass_users = [];
+        }
+
+        return $bypass_users;
+    }
+
     public function getGlobalTimeAccessChange()
     {
         return get_option('tollbridge_time_access_change', false);
@@ -107,6 +118,20 @@ class Config
         register_setting(
             'tollbridge_paywall_paywall_config',
             'tollbridge_plans_with_access'
+        );
+
+
+
+        add_settings_field(
+            'tollbridge_user_types_with_bypass',
+            'Allow these user types to bypass paywall',
+            [$this, 'renderUserBypassOptions'],
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_paywall_config_global'
+        );
+        register_setting(
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_user_types_with_bypass'
         );
 
 
@@ -202,6 +227,30 @@ class Config
                 <input type="checkbox" name="tollbridge_plans_with_access[]" '
                 .'value="'.$plan.'" '.$checked.'> '
                 .'<span>'.$plan.'</span>'
+                .'</label><br />';
+        }
+
+        $content .= '</fieldset>';
+
+        echo $content;
+    }
+
+
+    public function renderUserBypassOptions()
+    {
+        $existing_users = $this->getGlobalUserTypesWithByPass();
+        $roles = get_editable_roles();
+
+        $content = '<fieldset class="tollbridge_global_option">';
+        foreach ($roles as $slug => $role) {
+            $checked = '';
+            if (in_array($slug, $existing_users)) {
+                $checked = ' checked="checked"';
+            }
+            $content .= '<label>
+                <input type="checkbox" name="tollbridge_user_types_with_bypass[]" '
+                .'value="'.$slug.'" '.$checked.'> '
+                .'<span>'.$role['name'].'</span>'
                 .'</label><br />';
         }
 

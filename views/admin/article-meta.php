@@ -1,8 +1,10 @@
 <?php
 global $post;
-$global_rules_set = get_option('tollbridge_is_using_global_rules');
-$meta = get_post_meta($post->ID);
-$override = $meta['tollbridge_override_global_rules'][0] ?? false;
+$manager = new \Tollbridge\Paywall\Manager();
+$global_rules_set = $manager->globalSettingsAreActive();
+$article = new \Tollbridge\Paywall\Frontend\Article();
+$article->setId($post->ID);
+$override = $article->hasMetaOverride();
 
 if ($global_rules_set) {
     ?>
@@ -42,14 +44,7 @@ if ($global_rules_set) {
 
 $class = ($global_rules_set && !$override) ? 'hidden' : '';
 
-$existing_plans = [];
-if (isset($meta['tollbridge_plans_with_access'][0])) {
-    $existing_plans = @unserialize($meta['tollbridge_plans_with_access'][0]);
-    if (!is_array($existing_plans)) {
-        $existing_plans = [];
-    }
-}
-$manager = new \Tollbridge\Paywall\Manager();
+$existing_plans = $article->getPlansWithAccess();
 $plans = $manager->getActivePlans();
 ?>
 <table class="form-table tollbridge-override-settings <?php echo $class; ?>" role="presentation">
@@ -83,7 +78,39 @@ $plans = $manager->getActivePlans();
         </tr>
 
         <?php
-        $time_access_change = $meta['tollbridge_time_access_change'][0] ?? 0;
+        $user_types_with_bypass = $article->getUserTypesWithBypass();
+        $roles = get_editable_roles();
+        ?>
+        <tr class="tollbridge_global_option">
+            <th scope="row">Allow these user types to bypass paywall</th>
+        </tr>
+        <tr class="tollbridge_global_option">
+            <td>
+                <fieldset>
+                    <label>
+                    <?php
+                    $content = '';
+                    foreach ($roles as $slug => $role) {
+                        $checked = '';
+                        if (in_array($slug, $user_types_with_bypass)) {
+                            $checked = ' checked="checked"';
+                        }
+                        $content .= '<label>
+                            <input type="checkbox" name="tollbridge_user_types_with_bypass[]" '
+                            .'value="'.$slug.'" '.$checked.'> '
+                            .'<span>'.$role['name'].'</span>'
+                            .'</label><br />';
+                    }
+                    echo $content;
+                    ?>
+                    </label>
+                    <br>
+                </fieldset>
+            </td>
+        </tr>
+
+        <?php
+        $time_access_change = $article->getTimeAccessChange();
         ?>
         <tr>
             <th scope="row">Change paywall access over time</th>
@@ -115,13 +142,13 @@ $plans = $manager->getActivePlans();
         <tr>
             <td>
                 <label class="tollbridge_time_access_dependent <?php echo $class; ?>">
-                    After <input type="number" name="tollbridge_time_access_delay" value="<?php echo $meta['tollbridge_time_access_delay'][0] ?? 0; ?>" min="0" size="2"> days, change articles from:
+                    After <input type="number" name="tollbridge_time_access_delay" value="<?php echo $article->getTimeAccessDelay(); ?>" min="0" size="2"> days, change articles from:
                 </label>
             </td>
         </tr>
 
         <?php
-        $direction = $meta['tollbridge_time_access_change_direction'][0] ?? 'to_free';
+        $direction = $article->getTimeAccessChangeDirection();
         ?>
         <tr>
             <td>

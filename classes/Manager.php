@@ -24,6 +24,13 @@ class Manager
      */
     private $applicable_plans_cache = null;
 
+
+    /**
+     * @var array
+     */
+    private $user_types_with_bypass_cache = null;
+
+
     public function __construct()
     {
         $this->client = new Client();
@@ -142,6 +149,28 @@ class Manager
         }
 
         return $this->applicable_plans_cache;
+    }
+
+
+    /**
+     * Get the list of user type slugs which are permitted to bypass the paywall.
+     */
+    public function getUserTypesWithBypass(WP_Post $post) : array
+    {
+        if (!is_null($this->user_types_with_bypass_cache)) {
+            return $this->user_types_with_bypass_cache;
+        }
+
+        $article = new Article();
+        $article->setId($post->ID);
+
+        if ($this->globalSettingsAreActive() && !$article->hasMetaOverride()) {
+            $config = new Config();
+            return $config->getGlobalUserTypesWithByPass();
+        }
+
+        // Get user types from article
+        return $article->getUserTypesWithBypass();
     }
 
 
