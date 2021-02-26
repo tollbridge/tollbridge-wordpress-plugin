@@ -201,7 +201,7 @@ class Article
 
         ob_start();
         require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
-        $pauload = ob_get_clean();
+        $payload = ob_get_clean();
 
         return $payload.$content;
     }
