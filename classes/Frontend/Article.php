@@ -2,7 +2,6 @@
 
 namespace Tollbridge\Paywall\Frontend;
 
-use WP_Post;
 use Tollbridge\Paywall\Manager;
 use Tollbridge\Paywall\Settings\Config;
 
@@ -118,18 +117,7 @@ class Article
     }
 
 
-    public function getUserTypesWithBypass() : array
-    {
-        if (!isset($this->meta['tollbridge_user_types_with_bypass'])
-            || !is_array($this->meta['tollbridge_user_types_with_bypass'])) {
-            $this->meta['tollbridge_user_types_with_bypass'] = [];
-        }
-
-        return $this->meta['tollbridge_user_types_with_bypass'];
-    }
-
-
-    private function userCanBypassPaywall(WP_Post $post) : bool
+    private function userCanBypassPaywall() : bool
     {
         if (!is_user_logged_in()) {
             return false;
@@ -140,7 +128,7 @@ class Article
             return false;
         }
 
-        return (count(array_intersect($meta->roles, $this->manager->getUserTypesWithBypass($post))) > 0);
+        return (count(array_intersect($meta->roles, $this->manager->getUserTypesWithBypass())) > 0);
     }
 
     private function isEligibleToShowPaywall() : bool
@@ -167,11 +155,12 @@ class Article
         if (!$this->isEligibleToShowPaywall()) {
             return;
         }
-        global $post;
 
-        if ($this->userCanBypassPaywall($post)) {
+        if ($this->userCanBypassPaywall()) {
             return;
         }
+
+        global $post;
 
         $plans = $this->manager->getApplicablePlans($post);
 

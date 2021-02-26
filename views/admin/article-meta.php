@@ -78,38 +78,6 @@ $plans = $manager->getActivePlans();
         </tr>
 
         <?php
-        $user_types_with_bypass = $article->getUserTypesWithBypass();
-        $roles = get_editable_roles();
-        ?>
-        <tr class="tollbridge_global_option">
-            <th scope="row">Allow these user types to bypass paywall</th>
-        </tr>
-        <tr class="tollbridge_global_option">
-            <td>
-                <fieldset>
-                    <label>
-                    <?php
-                    $content = '';
-                    foreach ($roles as $slug => $role) {
-                        $checked = '';
-                        if (in_array($slug, $user_types_with_bypass)) {
-                            $checked = ' checked="checked"';
-                        }
-                        $content .= '<label>
-                            <input type="checkbox" name="tollbridge_user_types_with_bypass[]" '
-                            .'value="'.$slug.'" '.$checked.'> '
-                            .'<span>'.$role['name'].'</span>'
-                            .'</label><br />';
-                    }
-                    echo $content;
-                    ?>
-                    </label>
-                    <br>
-                </fieldset>
-            </td>
-        </tr>
-
-        <?php
         $time_access_change = $article->getTimeAccessChange();
         ?>
         <tr>

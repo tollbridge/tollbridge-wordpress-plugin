@@ -155,22 +155,16 @@ class Manager
     /**
      * Get the list of user type slugs which are permitted to bypass the paywall.
      */
-    public function getUserTypesWithBypass(WP_Post $post) : array
+    public function getUserTypesWithBypass() : array
     {
         if (!is_null($this->user_types_with_bypass_cache)) {
             return $this->user_types_with_bypass_cache;
         }
 
-        $article = new Article();
-        $article->setId($post->ID);
+        $config = new Config();
+        $this->user_types_with_bypass_cache = $config->getGlobalUserTypesWithByPass();
 
-        if ($this->globalSettingsAreActive() && !$article->hasMetaOverride()) {
-            $config = new Config();
-            return $config->getGlobalUserTypesWithByPass();
-        }
-
-        // Get user types from article
-        return $article->getUserTypesWithBypass();
+        return $this->user_types_with_bypass_cache;
     }
 
 
