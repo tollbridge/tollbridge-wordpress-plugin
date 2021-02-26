@@ -28,7 +28,7 @@ class Article
             'tollbridge-metabox',
             'Tollbridge Paywall Settings',
             [$this, 'displayArticleMetaBox'],
-            'post',
+            $this->config->getApplicablePostTypes(),
             'side',
             'low'
         );
