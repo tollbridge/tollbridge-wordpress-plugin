@@ -93,6 +93,17 @@ class Config
         );
 
 
+        add_settings_field(
+            'tollbridge_user_types_with_bypass',
+            'Allow these user types to bypass paywall',
+            [$this, 'renderUserBypassOptions'],
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_paywall_config_global'
+        );
+        register_setting(
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_user_types_with_bypass'
+        );
 
         add_settings_field(
             'tollbridge_is_using_global_rules',
@@ -119,21 +130,6 @@ class Config
             'tollbridge_paywall_paywall_config',
             'tollbridge_plans_with_access'
         );
-
-
-
-        add_settings_field(
-            'tollbridge_user_types_with_bypass',
-            'Allow these user types to bypass paywall',
-            [$this, 'renderUserBypassOptions'],
-            'tollbridge_paywall_paywall_config',
-            'tollbridge_paywall_config_global'
-        );
-        register_setting(
-            'tollbridge_paywall_paywall_config',
-            'tollbridge_user_types_with_bypass'
-        );
-
 
 
         add_settings_field(
@@ -241,7 +237,7 @@ class Config
         $existing_users = $this->getGlobalUserTypesWithByPass();
         $roles = get_editable_roles();
 
-        $content = '<fieldset class="tollbridge_global_option">';
+        $content = '<fieldset>';
         foreach ($roles as $slug => $role) {
             $checked = '';
             if (in_array($slug, $existing_users)) {
