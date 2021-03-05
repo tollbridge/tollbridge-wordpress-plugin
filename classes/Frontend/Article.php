@@ -168,7 +168,7 @@ class Article
             return;
         }
 
-        echo '<meta name="tollbridge" content="'.json_encode($plans, JSON_HEX_QUOT).'"/>';
+        echo '<meta name="tollbridge" content="'.implode(', ', array_column($plans, 'id')).'"/>';
     }
 
 
