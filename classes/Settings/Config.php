@@ -212,16 +212,24 @@ class Config
         $existing_plans = $this->getGlobalPlansWithAccess();
 
         $manager = new Manager();
-        $plans = $manager->getActivePlans();
+
+        try {
+            $plans = $manager->getActivePlans();
+        } catch (\Exception $e) {
+            echo '<div class="error">Error retrieving plans: '.$e->getMessage().'</div>';
+            echo '<fieldset class="tollbridge_global_option"><strong>'.$e->getMessage().'</strong></fieldset>';
+            return;
+        }
+
         $content = '<fieldset class="tollbridge_global_option">';
-        foreach ($plans as $plan) {
+        foreach ($plans as $id => $plan) {
             $checked = '';
-            if (in_array($plan, $existing_plans)) {
+            if (in_array($id, $existing_plans)) {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
                 <input type="checkbox" name="tollbridge_plans_with_access[]" '
-                .'value="'.$plan.'" '.$checked.'> '
+                .'value="'.$id.'" '.$checked.'> '
                 .'<span>'.$plan.'</span>'
                 .'</label><br />';
         }

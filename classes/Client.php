@@ -3,6 +3,7 @@
 namespace Tollbridge\Paywall;
 
 use Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException;
+use Tollbridge\Paywall\Exceptions\NoPlansExistException;
 use Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException;
 
 /**
@@ -24,6 +25,12 @@ class Client
      * @var string
      */
     private $clientSecret;
+
+
+    /**
+     * @var array
+     */
+    private $plansCache;
 
     public function canAttemptConnection()
     {
@@ -81,19 +88,35 @@ class Client
      */
     public function getPlans()
     {
+        if (!empty($this->plansCache)) {
+            return $this->plansCache;
+        }
+
         $token = $this->getAccessToken();
 
-        $response = wp_remote_get('https://'.$this->appId.'/api/config/plans', [
+        $response = wp_remote_get('https://'.$this->appId.'/api/config', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
             ]
         ]);
 
         if ($response['response']['code'] != 200) {
-            throw new ResponseErrorReceivedException("Error code ".$response['response']['code']." received from remote server.");
+            throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
         }
 
         $data = json_decode($response['body'], true);
-        return array_column($data['data'], 'name');
+
+        if (empty($data['plans'])) {
+            throw new NoPlansExistException();
+        }
+
+        $plans = [];
+        foreach ($data['plans'] as $plan) {
+            $plans[$plan['id']] = $plan['name'];
+        }
+
+        $this->plansCache = $plans;
+
+        return $this->plansCache;
     }
 }

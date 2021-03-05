@@ -31,7 +31,7 @@ class Article
         $this->config = new Config();
 
         add_action('wp_head', [$this, 'addArticleMetaHeader']);
-        // Adding the js via body_open is the cleaneset way, but that hook does not
+        // Adding the js via body_open is the cleanest way, but that hook does not
         // have widespread dev support yet, so add a fallback.
         add_action('wp_body_open', [$this, 'addArticleBodyOpenCode']);
         add_filter('the_content', [$this, 'addArticleBodyContentCode'], 10, 1);
@@ -168,7 +168,7 @@ class Article
             return;
         }
 
-        echo '<meta name="tollbridge" content="'.addslashes(implode(', ', $plans)).'"/>';
+        echo '<meta name="tollbridge" content="'.json_encode($plans, JSON_HEX_QUOT).'"/>';
     }
 
 
