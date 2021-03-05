@@ -118,12 +118,23 @@ class Manager
             }
         }
 
-        if (empty($plans)) {
+        // We have plan ids - need to hydrate them with plan names!
+        $planList = $this->client->getPlans();
+        $hydratedPlans = [];
+        foreach ($plans as $id) {
+            if (!empty($planList[$id])) {
+                $hydratedPlans[] = [
+                    'id' => $id,
+                    'plan' => $planList[$id],
+                ];
+            }
+        }
+        if (empty($hydratedPlans)) {
             $this->applicable_plans_cache = [];
             return [];
         }
 
-        $this->applicable_plans_cache = $plans;
+        $this->applicable_plans_cache = $hydratedPlans;
 
         // No time filters applied? Return now.
         if (!$hasTimeAccessChange) {
