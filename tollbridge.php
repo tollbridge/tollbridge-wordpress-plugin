@@ -14,7 +14,7 @@
  * Plugin Name:       Tollbridge Paywall Management
  * Plugin URI:        https://www.tollbridge.co
  * Description:       Implement Tollbridge paywall on your existing Wordpress site.
- * Version:           1.0.1
+ * Version:           1.1.0
  * Author:            Tollbridge.co
  * Author URI:        tollbridge.co
  * License:           GPL-2.0+
