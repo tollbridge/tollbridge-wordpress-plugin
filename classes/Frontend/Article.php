@@ -204,7 +204,9 @@ class Article
         }
 
         if (amp_is_request()) {
+            ob_start();
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/view.php';
+            return ob_get_clean();
         } else {
             ob_start();
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
