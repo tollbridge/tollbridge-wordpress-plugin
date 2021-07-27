@@ -7,9 +7,9 @@ if ($manager->allAccountSettingsAreEntered()) {
 
     $plans = $this->manager->getApplicablePlans($post);
 
-    $accessRule = implode(' AND ', array_map(function ($plan) {
-        return 'plan != ' . $plan;
-    }, array_column($plans, 'id')));
+    $accessRule = $this->manager->getAccessRules($post);
+
+    $requirements = $this->manager->getRequirementsText($post);
 
     $views = $this->manager->getAmpViews();
 
@@ -17,6 +17,8 @@ if ($manager->allAccountSettingsAreEntered()) {
         if ($key == 'css' || $key == 'inline') {
             continue;
         }
-        echo str_replace('%amp-access-rule%', $accessRule, $view);
+        echo str_replace('%amp-access-rule%', $accessRule,
+            str_replace('{{ widget.requirements }}', $requirements, $view)
+        );
     }
 }
