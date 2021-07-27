@@ -5,8 +5,9 @@
 $manager = new \Tollbridge\Paywall\Manager();
 
 if ($manager->allAccountSettingsAreEntered()) {
+    $views = $this->manager->getAmpViews();
     $appId = $this->manager->getAppId(); ?>
-    <style amp-custom><?php require_once plugin_dir_path(dirname(__FILE__)) . '/../css/amp.css'; ?></style>
+    <style amp-custom><?=$views['css']?></style>
     <script id="amp-access" type="application/json">
         {
             "type": "client",

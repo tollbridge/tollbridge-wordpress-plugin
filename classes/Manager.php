@@ -75,6 +75,10 @@ class Manager
         return $this->client->getPlans();
     }
 
+    public function getAmpViews()
+    {
+        return $this->client->getViews();
+    }
 
     public function accountSettingsCanBeAuthenticated() : bool
     {

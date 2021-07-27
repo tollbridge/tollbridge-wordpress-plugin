@@ -119,4 +119,36 @@ class Client
 
         return $this->plansCache;
     }
+
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     */
+    public function getViews()
+    {
+        if (!empty($this->viewsCache)) {
+            return $this->viewsCache;
+        }
+
+        $token = $this->getAccessToken();
+
+        $response = wp_remote_get('https://'.$this->appId.'/api/amp/views', [
+            'headers' => [
+                'Authorization' => 'Bearer '.$token,
+            ]
+        ]);
+
+        if ($response['response']['code'] != 200) {
+            throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
+        }
+
+        $data = json_decode($response['body'], true);
+
+        if (empty($data)) {
+            return [];
+        }
+
+        $this->viewsCache = $data;
+
+        return $this->viewsCache;
+    }
 }

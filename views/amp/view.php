@@ -7,10 +7,19 @@ if ($manager->allAccountSettingsAreEntered()) {
 
     $plans = $this->manager->getApplicablePlans($post);
 
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/leaky.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/fullscreen.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/slideup.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/inline.php';
+    $accessRule = implode(' AND ', array_map(function ($plan) {
+        return 'plan != ' . $plan;
+    }, array_column($plans, 'id')));
+
+    $views = $this->manager->getAmpViews();
+
+    foreach ($views as $key => $view) {
+        if ($key == 'css') {
+            continue;
+        }
+        echo str_replace('%amp-access-rule%', $accessRule, $view);
+    }
+
     require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/container.php';
 } else {
     echo $content;
