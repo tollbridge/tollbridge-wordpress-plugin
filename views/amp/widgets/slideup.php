@@ -22,7 +22,7 @@
                                 Login
                             </button>
                         </div>
-                        <a href="https://wordpress.co.test"
+                        <a href="<?=get_home_url()?>"
                            class="w-full flex text-gray-600 items-center justify-center mt-2 text-sm"> Return back to
                             homepage </a><a href="https://www.tollbridge.co" target="_blank"
                                             class="w-full flex text-gray-400 items-center justify-center mt-8 text-sm {{ widget.hide_tollbridge_branding }}""> Powered
