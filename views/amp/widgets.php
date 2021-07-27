@@ -18,7 +18,9 @@ if ($manager->allAccountSettingsAreEntered()) {
             continue;
         }
         echo str_replace('%amp-access-rule%', $accessRule,
-            str_replace('{{ widget.requirements }}', $requirements, $view)
+            str_replace('{{ widget.requirements }}', $requirements,
+                str_replace('{{ homepage_url }}', get_home_url(), $view)
+            )
         );
     }
 }
