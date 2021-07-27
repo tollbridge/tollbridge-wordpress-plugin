@@ -14,12 +14,9 @@ if ($manager->allAccountSettingsAreEntered()) {
     $views = $this->manager->getAmpViews();
 
     foreach ($views as $key => $view) {
-        if ($key == 'inline') {
-            echo str_replace('%amp-access-rule%', $accessRule, $view);
+        if ($key == 'css' || $key == 'inline') {
+            continue;
         }
+        echo str_replace('%amp-access-rule%', $accessRule, $view);
     }
-
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/container.php';
-} else {
-    echo $content;
 }

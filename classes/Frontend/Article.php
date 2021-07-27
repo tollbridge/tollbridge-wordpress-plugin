@@ -193,6 +193,8 @@ class Article
 
         if (!amp_is_request()) {
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
+        } else {
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/widgets.php';
         }
     }
 
