@@ -27,7 +27,7 @@
                 <div class="flex justify-center border-l border-gray-200 pb-4">
                     <a on="tap:amp-access.login"
                        class="inline-flex items-center px-2.5 py-1.5 text-base font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                       style="color: rgb(45, 126, 213);"> {{ widget.button }} </a>
+                       style="color: {{ widget.button_background }};"> {{ widget.button }} </a>
                 </div>
             </div>
         </div>

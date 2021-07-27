@@ -1,33 +1,31 @@
 <div amp-access="<?= implode(' AND ', array_map(function ($plan) {
     return 'plan != ' . $plan;
-}, array_column($plans, 'id'))) ?> AND (views < 0 OR type = 'hard') AND widget.style = 'slideup'">
+}, array_column($plans, 'id'))) ?> AND (views < 0 OR type = 'hard') AND widget.style = 'inline'">
     <template amp-access-template type="amp-mustache">
-        <div class="absolute h-screen w-screen left-0 z-10000">
-            <div data-ref="wrapper" class="w-screen fixed left-0 bottom-0 flex items-center px-8 z-10000 py-16 bg-gray-200">
-                <div class="bg-white border-1 border-gray-300 shadow-xl rounded-lg overflow-hidden w-full mx-auto flex max-w-6xl flex-col md:flex-row">
-                    <div class="px-8 w-3/5 py-8"><h3 class="text-xl leading-6 font-medium text-gray-800"> {{ widget.title
+        <div class="relative w-full">
+            <div class="w-full bottom-0 flex items-center px-8 py-16 bg-gray-200">
+                <div class="bg-white border-1 border-gray-300 shadow-xl rounded-lg overflow-hidden w-full mx-auto">
+                    <div class="p-8"><h3 class="text-xl leading-6 font-medium text-gray-800"> {{ widget.title
                             }} </h3>
-                        <div class="mt-6 tracking-wide text-lg leading-5 text-gray-700"><p> {{ widget.body }} </p></div>
+                        <div class="mt-6 tracking-wide text-lg leading-5 text-gray-700"><p> {{ widget.body
+                                }} </p></div>
                         <div class="mt-4"><h3 id="tier-standard" class="inline-flex leading-5 text-base"
-                                              style="color: rgb(45, 126, 213);"> {{ widget.requirements }} </h3></div>
+                                              style="color: {{ widget.button_background }};"> {{ widget.requirements }} </h3></div>
                     </div>
-                    <div class="bg-gray-100 flex flex-col content-center justify-center p-8 flex-1">
+                    <div class="bg-gray-100 flex flex-col items-center justify-center p-8">
                         <div class="rounded-md w-full max-w-lg">
                             <div class="flex flex-col justify-center shadow-lg">
                                 <a on="tap:amp-access.login"
                                    class="flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-gray-400 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out w-full"
-                                   style="background: rgb(45, 126, 213); color: rgb(255, 255, 255);">
+                                   style="background: {{ widget.button_background }}; color: {{ widget.button_text }};">
                                     {{ widget.button }} </a></div>
                             <button on="tap:amp-access.login" class="focus:outline-none text-gray-500 hover:text-gray-600 font-semibold text-base my-8 table mx-auto">
                                 Login
                             </button>
                         </div>
-                        <a href="https://wordpress.co.test"
-                           class="w-full flex text-gray-600 items-center justify-center mt-2 text-sm"> Return back to
-                            homepage </a><a href="https://www.tollbridge.co" target="_blank"
-                                            class="w-full flex text-gray-400 items-center justify-center mt-8 text-sm"> Powered
-                            by
-                            <svg id="tollbridge_logo" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                        <a href="https://www.tollbridge.co" target="_blank"
+                           class="w-full flex text-gray-400 items-center justify-center mt-8 text-sm {{ widget.hide_tollbridge_branding }}"> Powered by
+                            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
                                  viewBox="0 0 420.12 91.66" class="h-5 ml-2">
                                 <path d="M136.19,68.41a14.43,14.43,0,0,1-4.36,2.1,17.7,17.7,0,0,1-4.91.69c-3.63,0-6.38-1.08-8.26-3.1s-2.82-5-2.82-8.95V39.7h-5.79V33.29h5.79V25.13l8.92-1v9.2h8.57l-.91,6.41h-7.66V58.94a6.31,6.31,0,0,0,.94,3.9,3.55,3.55,0,0,0,3,1.18,9.11,9.11,0,0,0,4.39-1.32Z"
                                       class="cls-1"></path>
@@ -64,7 +62,7 @@
                                 <path d="M34.1,33.74a.86.86,0,0,0-.86.87V48.14a.86.86,0,0,0,1,.85,66.21,66.21,0,0,1,7.67-1,.86.86,0,0,0,.81-.86V34.61a.87.87,0,0,0-.87-.87Z"
                                       class="cls-2"></path>
                             </svg>
-                        </a></div>
+                        </a></div><div class="hidden"></div>
                 </div>
             </div>
         </div>

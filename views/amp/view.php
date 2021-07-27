@@ -7,10 +7,10 @@ if ($manager->allAccountSettingsAreEntered()) {
 
     $plans = $this->manager->getApplicablePlans($post);
 
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/leaky.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/fullscreen.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/slideup.php';
-    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/inline.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/leaky.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/fullscreen.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/slideup.php';
+    require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets/inline.php';
     require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/container.php';
 } else {
     echo $content;
