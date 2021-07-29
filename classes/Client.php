@@ -96,13 +96,11 @@ class Client
             return $plans;
         }
 
-        $token = $this->getAccessToken();
+        if (!$this->canAttemptConnection()) {
+            throw new MissingConnectionSettingsException();
+        }
 
-        $response = wp_remote_get('https://'.$this->appId.'/api/config', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ]
-        ]);
+        $response = wp_remote_get('https://'.$this->appId.'/api/config');
 
         if ($response['response']['code'] != 200) {
             throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
@@ -136,13 +134,11 @@ class Client
             return $views;
         }
 
-        $token = $this->getAccessToken();
+        if (!$this->canAttemptConnection()) {
+            throw new MissingConnectionSettingsException();
+        }
 
-        $response = wp_remote_get('https://'.$this->appId.'/api/amp/views', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ]
-        ]);
+        $response = wp_remote_get('https://'.$this->appId.'/api/amp/views');
 
         if ($response['response']['code'] != 200) {
             throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
