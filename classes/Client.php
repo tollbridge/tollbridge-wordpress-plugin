@@ -26,12 +26,6 @@ class Client
      */
     private $clientSecret;
 
-
-    /**
-     * @var array
-     */
-    private $plansCache;
-
     public function canAttemptConnection()
     {
         $manager = new Manager();
@@ -57,6 +51,12 @@ class Client
             throw new MissingConnectionSettingsException();
         }
 
+        $accessToken = wp_cache_get('tollbridgeAccessToken', 'tollbridge');
+
+        if (!empty($accessToken)) {
+            return $accessToken;
+        }
+
         $data = [
             'grant_type' => 'client_credentials',
             'client_id' => $this->clientId,
@@ -79,6 +79,8 @@ class Client
 
         $data = json_decode($response['body']);
 
+        wp_cache_set('tollbridgeAccessToken', $data->access_token, 'tollbridge', 900);
+
         return $data->access_token;
     }
 
@@ -88,8 +90,10 @@ class Client
      */
     public function getPlans()
     {
-        if (!empty($this->plansCache)) {
-            return $this->plansCache;
+        $plans = wp_cache_get('tollbridgePlans', 'tollbridge');
+
+        if (!empty($plans)) {
+            return $plans;
         }
 
         $token = $this->getAccessToken();
@@ -111,13 +115,14 @@ class Client
         }
 
         $plans = [];
+
         foreach ($data['plans'] as $plan) {
             $plans[$plan['id']] = $plan['name'];
         }
 
-        $this->plansCache = $plans;
+        wp_cache_set('tollbridgePlans', $plans, 'tollbridge', 900);
 
-        return $this->plansCache;
+        return $plans;
     }
 
     /**
@@ -125,8 +130,10 @@ class Client
      */
     public function getViews()
     {
-        if (!empty($this->viewsCache)) {
-            return $this->viewsCache;
+        $views = wp_cache_get('tollbridgeViews', 'tollbridge');
+
+        if (!empty($views)) {
+            return $views;
         }
 
         $token = $this->getAccessToken();
@@ -147,8 +154,8 @@ class Client
             return [];
         }
 
-        $this->viewsCache = $data;
+        wp_cache_set('tollbridgeViews', $data, 'tollbridge', 900);
 
-        return $this->viewsCache;
+        return $data;
     }
 }
