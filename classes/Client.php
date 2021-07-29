@@ -26,12 +26,6 @@ class Client
      */
     private $clientSecret;
 
-
-    /**
-     * @var array
-     */
-    private $plansCache;
-
     public function canAttemptConnection()
     {
         $manager = new Manager();
@@ -57,6 +51,12 @@ class Client
             throw new MissingConnectionSettingsException();
         }
 
+        $accessToken = wp_cache_get('tollbridgeAccessToken', 'tollbridge');
+
+        if (!empty($accessToken)) {
+            return $accessToken;
+        }
+
         $data = [
             'grant_type' => 'client_credentials',
             'client_id' => $this->clientId,
@@ -79,6 +79,8 @@ class Client
 
         $data = json_decode($response['body']);
 
+        wp_cache_set('tollbridgeAccessToken', $data->access_token, 'tollbridge', 900);
+
         return $data->access_token;
     }
 
@@ -88,17 +90,17 @@ class Client
      */
     public function getPlans()
     {
-        if (!empty($this->plansCache)) {
-            return $this->plansCache;
+        $plans = wp_cache_get('tollbridgePlans', 'tollbridge');
+
+        if (!empty($plans)) {
+            return $plans;
         }
 
-        $token = $this->getAccessToken();
+        if (!$this->canAttemptConnection()) {
+            throw new MissingConnectionSettingsException();
+        }
 
-        $response = wp_remote_get('https://'.$this->appId.'/api/config', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ]
-        ]);
+        $response = wp_remote_get('https://'.$this->appId.'/api/config');
 
         if ($response['response']['code'] != 200) {
             throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
@@ -111,12 +113,45 @@ class Client
         }
 
         $plans = [];
+
         foreach ($data['plans'] as $plan) {
             $plans[$plan['id']] = $plan['name'];
         }
 
-        $this->plansCache = $plans;
+        wp_cache_set('tollbridgePlans', $plans, 'tollbridge', 900);
 
-        return $this->plansCache;
+        return $plans;
+    }
+
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     */
+    public function getViews()
+    {
+        $views = wp_cache_get('tollbridgeViews', 'tollbridge');
+
+        if (!empty($views)) {
+            return $views;
+        }
+
+        if (!$this->canAttemptConnection()) {
+            throw new MissingConnectionSettingsException();
+        }
+
+        $response = wp_remote_get('https://'.$this->appId.'/api/amp/views');
+
+        if ($response['response']['code'] != 200) {
+            throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
+        }
+
+        $data = json_decode($response['body'], true);
+
+        if (empty($data)) {
+            return [];
+        }
+
+        wp_cache_set('tollbridgeViews', $data, 'tollbridge', 900);
+
+        return $data;
     }
 }

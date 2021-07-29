@@ -168,7 +168,11 @@ class Article
             return;
         }
 
-        echo '<meta name="tollbridge" content="'.implode(', ', array_column($plans, 'id')).'"/>';
+        if (amp_is_request()) {
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/config.php';
+        } else {
+            echo '<meta name="tollbridge" content="'.implode(', ', array_column($plans, 'id')).'"/>';
+        }
     }
 
 
@@ -187,7 +191,11 @@ class Article
             return;
         }
 
-        require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
+        if (!amp_is_request()) {
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
+        } else {
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/widgets.php';
+        }
     }
 
 
@@ -199,10 +207,16 @@ class Article
             return $content;
         }
 
-        ob_start();
-        require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
-        $payload = ob_get_clean();
+        if (amp_is_request()) {
+            ob_start();
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/view.php';
+            return ob_get_clean();
+        } else {
+            ob_start();
+            require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
+            $payload = ob_get_clean();
 
-        return $payload.$content;
+            return $payload.$content;
+        }
     }
 }

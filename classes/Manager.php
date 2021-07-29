@@ -75,6 +75,10 @@ class Manager
         return $this->client->getPlans();
     }
 
+    public function getAmpViews()
+    {
+        return $this->client->getViews();
+    }
 
     public function accountSettingsCanBeAuthenticated() : bool
     {
@@ -182,5 +186,38 @@ class Manager
     public function globalSettingsAreActive()
     {
         return get_option('tollbridge_is_using_global_rules', false);
+    }
+
+    public function getAccessRules($post)
+    {
+        $plans = $this->getApplicablePlans($post);
+
+        return implode(' AND ', array_map(function ($plan) {
+            return 'plan != ' . $plan;
+        }, array_column($plans, 'id')));
+    }
+
+    public function getRequirementsText($post)
+    {
+        $plans = $this->getApplicablePlans($post);
+
+        $requirements = 'You need';
+
+        if (count($plans) == 1) {
+            $requirements = $plans[0]['plan'] . ' subscription required';
+        } else {
+            $first = true;
+
+            $last = array_pop($plans);
+
+            foreach ($plans as $plan) {
+                $requirements .= (($first) ? ' ' : ', ') . $plan['plan'];
+                $first = false;
+            }
+
+            $requirements .= ' or ' . $last['plan'] . ' subscription to access this page';
+        }
+
+        return $requirements;
     }
 }
