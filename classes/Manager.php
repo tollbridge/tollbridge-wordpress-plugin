@@ -33,7 +33,7 @@ class Manager
 
     public function __construct()
     {
-        $this->client = new Client();
+        $this->client = Client::getInstance();
     }
 
 
@@ -90,7 +90,6 @@ class Manager
 
         return true;
     }
-
 
     /**
      * Get the list of plans which are applicable to the given post.
@@ -199,25 +198,27 @@ class Manager
 
     public function getRequirementsText($post)
     {
+        $config = $this->client->getConfig();
+
         $plans = $this->getApplicablePlans($post);
 
-        $requirements = __('You need', 'tollbridge');
-
         if (count($plans) == 1) {
-            $requirements = $plans[0]['plan'] . __(' subscription required', 'tollbridge');
-        } else {
-            $first = true;
-
-            $last = array_pop($plans);
-
-            foreach ($plans as $plan) {
-                $requirements .= (($first) ? ' ' : ', ') . $plan['plan'];
-                $first = false;
-            }
-
-            $requirements .= ' ' . __('or' , 'tollbridge') . ' ' . $last['plan'] . __(' subscription to access this page', 'tollbridge');
+            return str_replace("%plan%", $plans[0]['plan'], $config['paywall_widget_requirement']);
         }
 
-        return $requirements;
+        $text = '';
+
+        $first = true;
+
+        $last = array_pop($plans);
+
+        foreach ($plans as $plan) {
+            $text .= (($first) ? ' ' : ', ') . $plan['plan'];
+            $first = false;
+        }
+
+        return str_replace("%otherPlan%", $last['plan'],
+            str_replace("%plan%", $text, $config['paywall_widget_requirements'])
+        );
     }
 }

@@ -11,6 +11,8 @@ use Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException;
  */
 class Client
 {
+    private static $instance = null;
+
     /**
      * @var string
      */
@@ -25,6 +27,15 @@ class Client
      * @var string
      */
     private $clientSecret;
+
+    public static function getInstance(): ?Client
+    {
+        if (self::$instance == null) {
+            self::$instance = new Client();
+        }
+
+        return self::$instance;
+    }
 
     public function canAttemptConnection()
     {
@@ -84,6 +95,24 @@ class Client
         return $data->access_token;
     }
 
+    public function getConfig()
+    {
+        if (!empty($this->config)) {
+            return $this->config;
+        }
+
+        if (!$this->canAttemptConnection()) {
+            throw new MissingConnectionSettingsException();
+        }
+
+        $response = wp_remote_get('https://' . $this->appId . '/api/config');
+
+        if ($response['response']['code'] != 200) {
+            throw new ResponseErrorReceivedException(__("The Tollbridge server has returned an error", 'tollbridge') . ' (' . $response['response']['code'] . "). " . __('Please try again later.', 'tollbridge'));
+        }
+
+        return $this->config = json_decode($response['body'], true);
+    }
 
     /**
      * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
@@ -96,17 +125,7 @@ class Client
             return $plans;
         }
 
-        if (!$this->canAttemptConnection()) {
-            throw new MissingConnectionSettingsException();
-        }
-
-        $response = wp_remote_get('https://'.$this->appId.'/api/config');
-
-        if ($response['response']['code'] != 200) {
-            throw new ResponseErrorReceivedException(__("The Tollbridge server has returned an error", 'tollbridge').' ('.$response['response']['code']."). " . __('Please try again later.', 'tollbridge'));
-        }
-
-        $data = json_decode($response['body'], true);
+        $data = $this->getConfig();
 
         if (empty($data['plans'])) {
             throw new NoPlansExistException();
