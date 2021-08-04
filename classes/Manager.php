@@ -215,7 +215,7 @@ class Manager
                 $first = false;
             }
 
-            $requirements .= ' or ' . $last['plan'] . __(' subscription to access this page', 'tollbridge');
+            $requirements .= ' ' . __('or' , 'tollbridge') . ' ' . $last['plan'] . __(' subscription to access this page', 'tollbridge');
         }
 
         return $requirements;
