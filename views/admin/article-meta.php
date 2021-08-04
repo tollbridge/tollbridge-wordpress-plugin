@@ -11,7 +11,7 @@ if ($global_rules_set) {
     <table class="form-table" role="presentation">
         <tbody>
             <tr>
-                <th scope="row">Override Global Settings?</th>
+                <th scope="row"><?php _e('Override Global Settings?', 'tollbridge'); ?></th>
             </tr>
             <tr>
                 <td>
@@ -22,7 +22,7 @@ if ($global_rules_set) {
                             if (!$override) {
                                 echo 'checked="checked" ';
                             } ?>
-                            > <span>Use global settings</span>
+                            > <span><?php _e('Use global settings', 'tollbridge'); ?></span>
                         </label>
                         <br />
                         <label>
@@ -31,7 +31,7 @@ if ($global_rules_set) {
                             if ($override) {
                                 echo 'checked="checked" ';
                             } ?>
-                            > <span>Custom article settings</span>
+                            > <span><?php _e('Custom article settings', 'tollbridge'); ?></span>
                         </label>
                     <br>
                     </fieldset>
@@ -51,7 +51,7 @@ try {
     <table class="form-table tollbridge-override-settings <?php echo $class; ?>" role="presentation">
         <tbody>
             <tr class="tollbridge_global_option">
-                <th scope="row">Only grant access to these plans</th>
+                <th scope="row"><?php _e('Only grant access to these plans', 'tollbridge'); ?></th>
             </tr>
             <tr class="tollbridge_global_option">
                 <td>
@@ -82,19 +82,19 @@ try {
             $time_access_change = $article->getTimeAccessChange();
             ?>
             <tr>
-                <th scope="row">Change paywall access over time</th>
+                <th scope="row"><?php _e('Change paywall access over time', 'tollbridge'); ?></th>
             </tr>
             <tr>
                 <td>
                     <fieldset>
                         <label>
                             <input type="radio" name="tollbridge_time_access_change" value="1" <?php
-                            echo($time_access_change ? 'checked="checked"' : ''); ?>> <span>Yes</span>
+                            echo($time_access_change ? 'checked="checked"' : ''); ?>> <span><?php _e('Yes', 'tollbridge'); ?></span>
                         </label>
                         <br>
                         <label>
                             <input type="radio" name="tollbridge_time_access_change" value="0" <?php
-                            echo(!$time_access_change ? 'checked="checked"' : ''); ?>> <span>No</span>
+                            echo(!$time_access_change ? 'checked="checked"' : ''); ?>> <span><?php _e('No', 'tollbridge'); ?></span>
                         </label>
                     </fieldset>
                 </td>
@@ -109,7 +109,7 @@ try {
             <tr>
                 <td>
                     <label class="tollbridge_time_access_dependent <?php echo $class; ?>">
-                        After <input type="number" name="tollbridge_time_access_delay" value="<?php echo $article->getTimeAccessDelay(); ?>" min="0" size="2"> days, change articles from:
+                        <?php _e('After', 'tollbridge'); ?> <input type="number" name="tollbridge_time_access_delay" value="<?php echo $article->getTimeAccessDelay(); ?>" min="0" size="2"> <?php _e('days, change articles from:', 'tollbridge'); ?>
                     </label>
                 </td>
             </tr>
@@ -122,12 +122,12 @@ try {
                     <fieldset class="tollbridge_time_access_dependent <?php echo $class; ?>">
                         <label>
                             <input type="radio" name="tollbridge_time_access_change_direction" value="to_free" <?php
-                            echo($direction == 'to_free' ? 'checked="checked"' : ''); ?>> <span>Paywalled to free</span>
+                            echo($direction == 'to_free' ? 'checked="checked"' : ''); ?>> <span><?php _e('Paywalled to free', 'tollbridge'); ?></span>
                         </label>
                         <br>
                         <label>
                             <input type="radio" name="tollbridge_time_access_change_direction" value="to_paid" <?php
-                            echo($direction == 'to_paid' ? 'checked="checked"' : ''); ?>> <span>Free to paywalled</span>
+                            echo($direction == 'to_paid' ? 'checked="checked"' : ''); ?>> <span><?php _e('Free to paywalled', 'tollbridge'); ?></span>
                         </label>
                     </fieldset>
                 </td>

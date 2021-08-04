@@ -201,10 +201,10 @@ class Manager
     {
         $plans = $this->getApplicablePlans($post);
 
-        $requirements = 'You need';
+        $requirements = __('You need', 'tollbridge');
 
         if (count($plans) == 1) {
-            $requirements = $plans[0]['plan'] . ' subscription required';
+            $requirements = $plans[0]['plan'] . __(' subscription required', 'tollbridge');
         } else {
             $first = true;
 
@@ -215,7 +215,7 @@ class Manager
                 $first = false;
             }
 
-            $requirements .= ' or ' . $last['plan'] . ' subscription to access this page';
+            $requirements .= ' or ' . $last['plan'] . __(' subscription to access this page', 'tollbridge');
         }
 
         return $requirements;

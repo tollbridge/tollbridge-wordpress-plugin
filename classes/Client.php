@@ -70,11 +70,11 @@ class Client
         ]);
 
         if (is_wp_error($response)) {
-            throw new ResponseErrorReceivedException("Error code received from remote server: ".$response->get_error_message());
+            throw new ResponseErrorReceivedException(__("Error code received from remote server: ", 'tollbridge').$response->get_error_message());
         }
 
         if ($response['response']['code'] != 200) {
-            throw new ResponseErrorReceivedException("Error code ".$response['response']['code']." received from remote server.");
+            throw new ResponseErrorReceivedException(__("Error code ", 'tollbridge').$response['response']['code'].__(" received from remote server.", 'tollbridge'));
         }
 
         $data = json_decode($response['body']);
@@ -103,7 +103,7 @@ class Client
         $response = wp_remote_get('https://'.$this->appId.'/api/config');
 
         if ($response['response']['code'] != 200) {
-            throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
+            throw new ResponseErrorReceivedException(__("The Tollbridge server has returned an error", 'tollbridge').' ('.$response['response']['code']."). " . __('Please try again later.', 'tollbridge'));
         }
 
         $data = json_decode($response['body'], true);
@@ -141,7 +141,7 @@ class Client
         $response = wp_remote_get('https://'.$this->appId.'/api/amp/views');
 
         if ($response['response']['code'] != 200) {
-            throw new ResponseErrorReceivedException("The Tollbridge server has returned an error (".$response['response']['code']."). Please try again later.");
+            throw new ResponseErrorReceivedException(__('The Tollbridge server has returned an error', 'tollbridge') . " (".$response['response']['code']."). " . __('Please try again later.', 'tollbridge'));
         }
 
         $data = json_decode($response['body'], true);

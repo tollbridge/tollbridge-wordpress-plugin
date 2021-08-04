@@ -1,0 +1,227 @@
+# Copyright (C) 2021 Tollbridge.co
+# This file is distributed under the same license as the Tollbridge Paywall Management plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tollbridge Paywall Management 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tollbridge-wordpress-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-08-04T12:01:38+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: tollbridge\n"
+
+#. Plugin Name of the plugin
+msgid "Tollbridge Paywall Management"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://www.tollbridge.co"
+msgstr ""
+
+#. Description of the plugin
+msgid "Implement Tollbridge paywall on your existing Wordpress site."
+msgstr ""
+
+#. Author of the plugin
+msgid "Tollbridge.co"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "tollbridge.co"
+msgstr ""
+
+#: classes/Admin.php:54
+#: classes/Admin.php:55
+msgid "Tollbridge"
+msgstr ""
+
+#: classes/Admin.php:65
+#: classes/Admin.php:66
+msgid "Paywall Config"
+msgstr ""
+
+#: classes/Admin.php:74
+#: classes/Admin.php:75
+#: views/admin/account-settings.php:14
+#: views/admin/paywall-config.php:22
+#: views/admin/paywall-config.php:28
+msgid "Account Settings"
+msgstr ""
+
+#: classes/Client.php:74
+msgid "Error code received from remote server: "
+msgstr ""
+
+#: classes/Client.php:78
+msgid "Error code "
+msgstr ""
+
+#: classes/Client.php:78
+msgid " received from remote server."
+msgstr ""
+
+#: classes/Client.php:109
+#: classes/Client.php:149
+msgid "The Tollbridge server has returned an error"
+msgstr ""
+
+#: classes/Client.php:109
+#: classes/Client.php:149
+msgid "Please try again later."
+msgstr ""
+
+#: classes/Manager.php:204
+msgid "You need"
+msgstr ""
+
+#: classes/Manager.php:207
+msgid " subscription required"
+msgstr ""
+
+#: classes/Manager.php:218
+msgid " subscription to access this page"
+msgstr ""
+
+#: classes/Settings/Account.php:36
+msgid "App ID"
+msgstr ""
+
+#: classes/Settings/Account.php:58
+msgid "Client ID"
+msgstr ""
+
+#: classes/Settings/Account.php:80
+msgid "Client Secret"
+msgstr ""
+
+#: classes/Settings/Config.php:85
+msgid "Apply to these post types"
+msgstr ""
+
+#: classes/Settings/Config.php:98
+msgid "Allow these user types to bypass paywall"
+msgstr ""
+
+#: classes/Settings/Config.php:110
+msgid "Apply settings globally"
+msgstr ""
+
+#: classes/Settings/Config.php:124
+#: views/admin/article-meta.php:54
+msgid "Only grant access to these plans"
+msgstr ""
+
+#: classes/Settings/Config.php:137
+#: classes/Settings/Config.php:149
+#: views/admin/article-meta.php:85
+msgid "Change paywall access over time"
+msgstr ""
+
+#: classes/Settings/Config.php:198
+msgid "Manage settings globally"
+msgstr ""
+
+#: classes/Settings/Config.php:203
+msgid "Manage settings per-article"
+msgstr ""
+
+#: classes/Settings/Config.php:205
+msgid "Global settings can be overridden on a per-article basis if required."
+msgstr ""
+
+#: classes/Settings/Config.php:219
+msgid "Error retrieving plans"
+msgstr ""
+
+#: classes/Settings/Config.php:272
+#: views/admin/article-meta.php:92
+msgid "Yes"
+msgstr ""
+
+#: classes/Settings/Config.php:277
+#: views/admin/article-meta.php:97
+msgid "No"
+msgstr ""
+
+#: classes/Settings/Config.php:283
+#: views/admin/article-meta.php:112
+msgid "After"
+msgstr ""
+
+#: classes/Settings/Config.php:285
+msgid "days, change articles from"
+msgstr ""
+
+#: classes/Settings/Config.php:296
+#: views/admin/article-meta.php:125
+msgid "Paywalled to free"
+msgstr ""
+
+#: classes/Settings/Config.php:303
+#: views/admin/article-meta.php:130
+msgid "Free to paywalled"
+msgstr ""
+
+#: views/admin/account-settings.php:15
+msgid "Enter the settings from your Tollbrige \"Integrations\" panel."
+msgstr ""
+
+#: views/admin/account-settings.php:21
+msgid "It looks like the Account Settings you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel."
+msgstr ""
+
+#: views/admin/account-settings.php:36
+msgid "Callback URL"
+msgstr ""
+
+#: views/admin/account-settings.php:40
+msgid "Copy this value to the \"Callback URL\" field in your Tollbridge \"Integrations\" panel."
+msgstr ""
+
+#: views/admin/article-meta.php:14
+msgid "Override Global Settings?"
+msgstr ""
+
+#: views/admin/article-meta.php:25
+msgid "Use global settings"
+msgstr ""
+
+#: views/admin/article-meta.php:34
+msgid "Custom article settings"
+msgstr ""
+
+#: views/admin/article-meta.php:112
+msgid "days, change articles from:"
+msgstr ""
+
+#: views/admin/paywall-config.php:16
+msgid "Paywall Configuration"
+msgstr ""
+
+#: views/admin/paywall-config.php:22
+msgid "It looks like you've not finished setting up your configuration yet! Please go to"
+msgstr ""
+
+#: views/admin/paywall-config.php:22
+msgid "to enter your Tollbridge account details."
+msgstr ""
+
+#: views/admin/paywall-config.php:28
+msgid "It looks like the"
+msgstr ""
+
+#: views/admin/paywall-config.php:28
+msgid "you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel."
+msgstr ""
+
+#: views/admin/paywall-config.php:34
+msgid "Configure how you want the paywall to behave on your site."
+msgstr ""
+
+#: views/frontend/callback.php:5
+msgid "Authenticating"
+msgstr ""

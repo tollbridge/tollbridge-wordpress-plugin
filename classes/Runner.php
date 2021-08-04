@@ -77,6 +77,8 @@ class Runner
         }
         $this->plugin_name = 'tollbridge-paywall';
 
+        load_plugin_textdomain('tollbridge', false, dirname( plugin_basename( __FILE__ ) ) .'/../lang');
+
         $this->load_dependencies();
         $this->define_admin_hooks();
         $this->define_public_hooks();

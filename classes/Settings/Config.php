@@ -82,7 +82,7 @@ class Config
 
         add_settings_field(
             'tollbridge_applicable_post_type',
-            'Apply to these post types',
+            __('Apply to these post types', 'tollbridge'),
             [$this, 'renderPostTypeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -95,7 +95,7 @@ class Config
 
         add_settings_field(
             'tollbridge_user_types_with_bypass',
-            'Allow these user types to bypass paywall',
+            __('Allow these user types to bypass paywall', 'tollbridge'),
             [$this, 'renderUserBypassOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -107,7 +107,7 @@ class Config
 
         add_settings_field(
             'tollbridge_is_using_global_rules',
-            'Apply settings globally',
+            __('Apply settings globally', 'tollbridge'),
             [$this, 'renderGlobalRadioOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -121,7 +121,7 @@ class Config
 
         add_settings_field(
             'tollbridge_plans_with_access',
-            'Only grant access to these plans',
+            __('Only grant access to these plans', 'tollbridge'),
             [$this, 'renderPlanOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -134,7 +134,7 @@ class Config
 
         add_settings_field(
             'tollbridge_time_access_change',
-            'Change paywall access over time',
+            __('Change paywall access over time', 'tollbridge'),
             [$this, 'renderTimeChangeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -146,7 +146,7 @@ class Config
 
         add_settings_field(
             'tollbridge_time_access_change',
-            'Change paywall access over time',
+            __('Change paywall access over time', 'tollbridge'),
             [$this, 'renderTimeAccessChangeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -195,14 +195,14 @@ class Config
         echo '<fieldset>
             <label>
                 <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="1" '.($global ? 'checked="checked"' : '').'> '
-                .'<span>Manage settings globally</span>
+                .'<span>' . __('Manage settings globally', 'tollbridge') . '</span>
             </label>
             <br />
             <label>
                 <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="0" '.(!$global ? 'checked="checked"' : '').'> '
-                .'<span>Manage settings per-article</span>
+                .'<span>' . __('Manage settings per-article', 'tollbridge') . '</span>
             </label>
-            <p class="description">Global settings can be overridden on a per-article basis if required.</p>
+            <p class="description">' . __('Global settings can be overridden on a per-article basis if required.', 'tollbridge') . '</p>
         </fieldset>';
     }
 
@@ -216,7 +216,7 @@ class Config
         try {
             $plans = $manager->getActivePlans();
         } catch (\Exception $e) {
-            echo '<div class="error">Error retrieving plans: '.$e->getMessage().'</div>';
+            echo '<div class="error">' . __('Error retrieving plans', 'tollbridge') . ':' .$e->getMessage().'</div>';
             echo '<fieldset class="tollbridge_global_option"><strong>'.$e->getMessage().'</strong></fieldset>';
             return;
         }
@@ -269,20 +269,20 @@ class Config
         echo '<fieldset class="tollbridge_global_option">
             <label>
                 <input type="radio" name="tollbridge_time_access_change" value="1" '.($change ? 'checked="checked"' : '').'> '
-                .'<span>Yes</span>
+                .'<span>' . __('Yes', 'tollbridge') . '</span>
             </label>
             <br />
             <label>
                 <input type="radio" name="tollbridge_time_access_change" value="0" '.(!$change ? 'checked="checked"' : '').'> '
-                .'<span>No</span>
+                .'<span>' . __('No', 'tollbridge') . '</span>
             </label>
         </fieldset>
         <br />
         <fieldset class="tollbridge_time_access_dependent '.(!$change ? 'hidden' : '').'">
             <label>
-                After <input type="number" name="tollbridge_time_access_delay" '
+                ' . __('After', 'tollbridge') . ' <input type="number" name="tollbridge_time_access_delay" '
                 .'value="'.$this->getGlobalTimeAccessDelay().'" min="0"> '
-                .'days, change articles from:
+                . __('days, change articles from', 'tollbridge') . ':
             </label>
         </fieldset>
         <br />';
@@ -293,14 +293,14 @@ class Config
                 <input type="radio" name="tollbridge_time_access_change_direction" '
                 .'value="'.self::ACCESS_CHANGE_PAID_TO_FREE.'" '
                 .($direction == self::ACCESS_CHANGE_PAID_TO_FREE ? 'checked="checked"' : '').'> '
-                .'<span>Paywalled to free</span>
+                .'<span>' . __('Paywalled to free', 'tollbridge') . '</span>
             </label>
             <br />
             <label>
                 <input type="radio" name="tollbridge_time_access_change_direction" '
                 .'value="'.self::ACCESS_CHANGE_FREE_TO_PAID.'" '
                 .($direction == self::ACCESS_CHANGE_FREE_TO_PAID ? 'checked="checked"' : '').'> '
-                .'<span>Free to paywalled</span>
+                .'<span>' . __('Free to paywalled', 'tollbridge') . '</span>
             </label>
         </fieldset>';
     }
