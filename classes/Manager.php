@@ -206,19 +206,12 @@ class Manager
             return str_replace("%plan%", $plans[0]['plan'], $config['paywall_widget_requirement']);
         }
 
-        $text = '';
-
-        $first = true;
-
         $last = array_pop($plans);
 
-        foreach ($plans as $plan) {
-            $text .= (($first) ? ' ' : ', ') . $plan['plan'];
-            $first = false;
-        }
+        $plan = implode(', ', array_column($plans, 'plan'));
 
         return str_replace("%otherPlan%", $last['plan'],
-            str_replace("%plan%", $text, $config['paywall_widget_requirements'])
+            str_replace("%plan%", $plan, $config['paywall_widget_requirements'])
         );
     }
 }
