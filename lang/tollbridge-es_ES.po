@@ -3,16 +3,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Tollbridge Paywall Management 1.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tollbridge-wordpress-plugin\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tollbridge-"
+"wordpress-plugin\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2021-08-05T14:02:30+00:00\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"PO-Revision-Date: 2021-08-05 17:04+0300\n"
+"X-Generator: Poedit 2.4.3\n"
 "X-Domain: tollbridge\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
 
 #. Plugin Name of the plugin
 msgid "Tollbridge Paywall Management"
@@ -34,20 +37,16 @@ msgstr ""
 msgid "tollbridge.co"
 msgstr ""
 
-#: classes/Admin.php:54
-#: classes/Admin.php:55
+#: classes/Admin.php:54 classes/Admin.php:55
 msgid "Tollbridge"
 msgstr ""
 
-#: classes/Admin.php:65
-#: classes/Admin.php:66
+#: classes/Admin.php:65 classes/Admin.php:66
 msgid "Paywall Config"
 msgstr ""
 
-#: classes/Admin.php:74
-#: classes/Admin.php:75
-#: views/admin/account-settings.php:14
-#: views/admin/paywall-config.php:22
+#: classes/Admin.php:74 classes/Admin.php:75
+#: views/admin/account-settings.php:14 views/admin/paywall-config.php:22
 #: views/admin/paywall-config.php:28
 msgid "Account Settings"
 msgstr ""
@@ -64,13 +63,11 @@ msgstr ""
 msgid " received from remote server."
 msgstr ""
 
-#: classes/Client.php:111
-#: classes/Client.php:163
+#: classes/Client.php:111 classes/Client.php:163
 msgid "The Tollbridge server has returned an error"
 msgstr ""
 
-#: classes/Client.php:111
-#: classes/Client.php:163
+#: classes/Client.php:111 classes/Client.php:163
 msgid "Please try again later."
 msgstr ""
 
@@ -98,13 +95,11 @@ msgstr ""
 msgid "Apply settings globally"
 msgstr ""
 
-#: classes/Settings/Config.php:124
-#: views/admin/article-meta.php:54
+#: classes/Settings/Config.php:124 views/admin/article-meta.php:54
 msgid "Only grant access to these plans"
 msgstr ""
 
-#: classes/Settings/Config.php:137
-#: classes/Settings/Config.php:149
+#: classes/Settings/Config.php:137 classes/Settings/Config.php:149
 #: views/admin/article-meta.php:85
 msgid "Change paywall access over time"
 msgstr ""
@@ -125,18 +120,15 @@ msgstr ""
 msgid "Error retrieving plans"
 msgstr ""
 
-#: classes/Settings/Config.php:272
-#: views/admin/article-meta.php:92
+#: classes/Settings/Config.php:272 views/admin/article-meta.php:92
 msgid "Yes"
 msgstr ""
 
-#: classes/Settings/Config.php:277
-#: views/admin/article-meta.php:97
+#: classes/Settings/Config.php:277 views/admin/article-meta.php:97
 msgid "No"
 msgstr ""
 
-#: classes/Settings/Config.php:283
-#: views/admin/article-meta.php:112
+#: classes/Settings/Config.php:283 views/admin/article-meta.php:112
 msgid "After"
 msgstr ""
 
@@ -144,13 +136,11 @@ msgstr ""
 msgid "days, change articles from"
 msgstr ""
 
-#: classes/Settings/Config.php:296
-#: views/admin/article-meta.php:125
+#: classes/Settings/Config.php:296 views/admin/article-meta.php:125
 msgid "Paywalled to free"
 msgstr ""
 
-#: classes/Settings/Config.php:303
-#: views/admin/article-meta.php:130
+#: classes/Settings/Config.php:303 views/admin/article-meta.php:130
 msgid "Free to paywalled"
 msgstr ""
 
@@ -159,7 +149,10 @@ msgid "Enter the settings from your Tollbrige \"Integrations\" panel."
 msgstr ""
 
 #: views/admin/account-settings.php:21
-msgid "It looks like the Account Settings you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel."
+msgid ""
+"It looks like the Account Settings you've entered are not active. Please re-"
+"check that you can log into your Tollbridge account, and that you have "
+"correctly copied over the settings from the Integration panel."
 msgstr ""
 
 #: views/admin/account-settings.php:36
@@ -167,7 +160,9 @@ msgid "Callback URL"
 msgstr ""
 
 #: views/admin/account-settings.php:40
-msgid "Copy this value to the \"Callback URL\" field in your Tollbridge \"Integrations\" panel."
+msgid ""
+"Copy this value to the \"Callback URL\" field in your Tollbridge "
+"\"Integrations\" panel."
 msgstr ""
 
 #: views/admin/article-meta.php:14
@@ -191,7 +186,9 @@ msgid "Paywall Configuration"
 msgstr ""
 
 #: views/admin/paywall-config.php:22
-msgid "It looks like you've not finished setting up your configuration yet! Please go to"
+msgid ""
+"It looks like you've not finished setting up your configuration yet! Please "
+"go to"
 msgstr ""
 
 #: views/admin/paywall-config.php:22
@@ -203,7 +200,10 @@ msgid "It looks like the"
 msgstr ""
 
 #: views/admin/paywall-config.php:28
-msgid "you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel."
+msgid ""
+"you've entered are not active. Please re-check that you can log into your "
+"Tollbridge account, and that you have correctly copied over the settings "
+"from the Integration panel."
 msgstr ""
 
 #: views/admin/paywall-config.php:34
