@@ -1,0 +1,229 @@
+# Copyright (C) 2021 Tollbridge.co
+# This file is distributed under the same license as the Tollbridge Paywall Management plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Tollbridge Paywall Management 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/tollbridge-"
+"wordpress-plugin\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-08-05T14:02:30+00:00\n"
+"PO-Revision-Date: 2021-08-05 17:12+0300\n"
+"X-Generator: Poedit 2.4.3\n"
+"X-Domain: tollbridge\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: es_ES\n"
+
+#. Plugin Name of the plugin
+msgid "Tollbridge Paywall Management"
+msgstr "Gestión de la pasarela de pagos Tollbridge"
+
+#. Plugin URI of the plugin
+msgid "https://www.tollbridge.co"
+msgstr "https://www.tollbridge.co"
+
+#. Description of the plugin
+msgid "Implement Tollbridge paywall on your existing Wordpress site."
+msgstr "Conecta tu sitio Wordpress con Tollbridge."
+
+#. Author of the plugin
+msgid "Tollbridge.co"
+msgstr "Tollbridge.co"
+
+#. Author URI of the plugin
+msgid "tollbridge.co"
+msgstr "tollbridge.co"
+
+#: classes/Admin.php:54 classes/Admin.php:55
+msgid "Tollbridge"
+msgstr "Tollbridge"
+
+#: classes/Admin.php:65 classes/Admin.php:66
+msgid "Paywall Config"
+msgstr "Configuración de la pasarela de pagos"
+
+#: classes/Admin.php:74 classes/Admin.php:75
+#: views/admin/account-settings.php:14 views/admin/paywall-config.php:22
+#: views/admin/paywall-config.php:28
+msgid "Account Settings"
+msgstr "Configuración de la cuenta"
+
+#: classes/Client.php:84
+msgid "Error code received from remote server: "
+msgstr "Código de error recibido del servidor remoto: "
+
+#: classes/Client.php:88
+msgid "Error code "
+msgstr "Código de error "
+
+#: classes/Client.php:88
+msgid " received from remote server."
+msgstr " recibido del servidor remoto."
+
+#: classes/Client.php:111 classes/Client.php:163
+msgid "The Tollbridge server has returned an error"
+msgstr "El servidor de Tollbridge ha respondido con un error"
+
+#: classes/Client.php:111 classes/Client.php:163
+msgid "Please try again later."
+msgstr "Por favor, vuelve a intentarlo más tarde."
+
+#: classes/Settings/Account.php:36
+msgid "App ID"
+msgstr "ID de aplicacción"
+
+#: classes/Settings/Account.php:58
+msgid "Client ID"
+msgstr "ID de cliente"
+
+#: classes/Settings/Account.php:80
+msgid "Client Secret"
+msgstr "Clave secreta de cliente"
+
+#: classes/Settings/Config.php:85
+msgid "Apply to these post types"
+msgstr "Aplicar a estos tipos de publicaciones"
+
+#: classes/Settings/Config.php:98
+msgid "Allow these user types to bypass paywall"
+msgstr "Permitir acceso gratuito a los usuarios de este tipo"
+
+#: classes/Settings/Config.php:110
+msgid "Apply settings globally"
+msgstr "Aplicar configuración global"
+
+#: classes/Settings/Config.php:124 views/admin/article-meta.php:54
+msgid "Only grant access to these plans"
+msgstr "Permitir acceso únicamente a estos planes"
+
+#: classes/Settings/Config.php:137 classes/Settings/Config.php:149
+#: views/admin/article-meta.php:85
+msgid "Change paywall access over time"
+msgstr "Cambiar acceso a la plataforma con el tiempo"
+
+#: classes/Settings/Config.php:198
+msgid "Manage settings globally"
+msgstr "Gestionar configuración globalmente"
+
+#: classes/Settings/Config.php:203
+msgid "Manage settings per-article"
+msgstr "Gestionar configuración por artículo"
+
+#: classes/Settings/Config.php:205
+msgid "Global settings can be overridden on a per-article basis if required."
+msgstr ""
+"La configuración global puede sobrescribirse a nivel de artículo si es "
+"necesario."
+
+#: classes/Settings/Config.php:219
+msgid "Error retrieving plans"
+msgstr "Error al obtener los planes"
+
+#: classes/Settings/Config.php:272 views/admin/article-meta.php:92
+msgid "Yes"
+msgstr "Sí"
+
+#: classes/Settings/Config.php:277 views/admin/article-meta.php:97
+msgid "No"
+msgstr "No"
+
+#: classes/Settings/Config.php:283 views/admin/article-meta.php:112
+msgid "After"
+msgstr "Tras"
+
+#: classes/Settings/Config.php:285
+msgid "days, change articles from"
+msgstr "días, actualizar artículos de"
+
+#: classes/Settings/Config.php:296 views/admin/article-meta.php:125
+msgid "Paywalled to free"
+msgstr "Restringido a gratuito"
+
+#: classes/Settings/Config.php:303 views/admin/article-meta.php:130
+msgid "Free to paywalled"
+msgstr "Gratuito a restringido"
+
+#: views/admin/account-settings.php:15
+msgid "Enter the settings from your Tollbrige \"Integrations\" panel."
+msgstr ""
+"Rellena la configuración desde tu panel de \"integraciones\" de Tollbridge."
+
+#: views/admin/account-settings.php:21
+msgid ""
+"It looks like the Account Settings you've entered are not active. Please re-"
+"check that you can log into your Tollbridge account, and that you have "
+"correctly copied over the settings from the Integration panel."
+msgstr ""
+"Parece que la configuración de la cuenta proporcionada no está activa. Por "
+"favor, vuelve a comprobar que tienes acceso a tu cuenta de Tollbridge y que "
+"has copiado la configuración del panel de integración correctamente."
+
+#: views/admin/account-settings.php:36
+msgid "Callback URL"
+msgstr "URL de retorno"
+
+#: views/admin/account-settings.php:40
+msgid ""
+"Copy this value to the \"Callback URL\" field in your Tollbridge "
+"\"Integrations\" panel."
+msgstr ""
+"Copia este valor en el campo \"URL de retorno\" en tu panel de "
+"\"integraciones\" de Tollbridge."
+
+#: views/admin/article-meta.php:14
+msgid "Override Global Settings?"
+msgstr "Sobrescribir configuración global?"
+
+#: views/admin/article-meta.php:25
+msgid "Use global settings"
+msgstr "Usar configuración global"
+
+#: views/admin/article-meta.php:34
+msgid "Custom article settings"
+msgstr "Configuración personalizada del artículo"
+
+#: views/admin/article-meta.php:112
+msgid "days, change articles from:"
+msgstr "días, actualizar artículos de:"
+
+#: views/admin/paywall-config.php:16
+msgid "Paywall Configuration"
+msgstr "Configuración de la pasarela de pagos"
+
+#: views/admin/paywall-config.php:22
+msgid ""
+"It looks like you've not finished setting up your configuration yet! Please "
+"go to"
+msgstr ""
+"Parece que aún no has terminado de configurar tu cuenta! Completa el "
+"proceso, por favor"
+
+#: views/admin/paywall-config.php:22
+msgid "to enter your Tollbridge account details."
+msgstr "para introducir tus detalles de configuración de Tollbridge."
+
+#: views/admin/paywall-config.php:28
+msgid "It looks like the"
+msgstr "Parece que"
+
+#: views/admin/paywall-config.php:28
+msgid ""
+"you've entered are not active. Please re-check that you can log into your "
+"Tollbridge account, and that you have correctly copied over the settings "
+"from the Integration panel."
+msgstr ""
+"que has introducido no están activas. Por favor, vuelve a comprobar que "
+"tienes acceso a tu cuenta de Tollbridge y que has copiado la configuración "
+"del panel de integración correctamente."
+
+#: views/admin/paywall-config.php:34
+msgid "Configure how you want the paywall to behave on your site."
+msgstr ""
+"Configura como quieres que se comporte la pasarela de pagos en tu sitio."
+
+#: views/frontend/callback.php:5
+msgid "Authenticating"
+msgstr "Autenticando"
