@@ -33,7 +33,7 @@ class Account
 
         add_settings_field(
             'tollbridge_app_id',
-            'App ID',
+            __('App ID', 'tollbridge'),
             [$this, 'render_settings_field'],
             'tollbridge_paywall_account_settings',
             'tollbridge_account_settings_general_section',
@@ -55,7 +55,7 @@ class Account
 
         add_settings_field(
             'tollbridge_client_id',
-            'Client ID',
+            __('Client ID', 'tollbridge'),
             [$this, 'render_settings_field'],
             'tollbridge_paywall_account_settings',
             'tollbridge_account_settings_general_section',
@@ -77,7 +77,7 @@ class Account
 
         add_settings_field(
             'tollbridge_client_secret',
-            'Client Secret',
+            __('Client Secret', 'tollbridge'),
             [$this, 'render_settings_field'],
             'tollbridge_paywall_account_settings',
             'tollbridge_account_settings_general_section',

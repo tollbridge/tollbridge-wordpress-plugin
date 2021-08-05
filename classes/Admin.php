@@ -51,8 +51,8 @@ class Admin
     public function addPluginAdminMenu()
     {
         add_menu_page(
-            'Tollbridge',
-            'Tollbridge',
+            __('Tollbridge', 'tollbridge'),
+            __('Tollbridge', 'tollbridge'),
             'edit_posts',
             $this->plugin_name,
             [$this, 'displayAccountSettings'],
@@ -62,8 +62,8 @@ class Admin
 
         add_submenu_page(
             $this->plugin_name,
-            'Paywall Config',
-            'Paywall Config',
+            __('Paywall Config', 'tollbridge'),
+            __('Paywall Config', 'tollbridge'),
             'administrator',
             $this->plugin_name.'-paywall-config',
             [$this, 'displayPaywallConfig']
@@ -71,8 +71,8 @@ class Admin
 
         add_submenu_page(
             $this->plugin_name,
-            'Account Settings',
-            'Account Settings',
+            __('Account Settings', 'tollbridge'),
+            __('Account Settings', 'tollbridge'),
             'administrator',
             $this->plugin_name.'-account-settings',
             [$this, 'displayAccountSettings']

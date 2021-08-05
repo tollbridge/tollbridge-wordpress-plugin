@@ -13,25 +13,25 @@ $settings_url = admin_url('admin.php?page=tollbridge-paywall-account-settings');
 ?>
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 <div class="wrap">
-    <h1>Paywall Configuration</h1>
+    <h1><?php _e('Paywall Configuration', 'tollbridge'); ?></h1>
 
     <?php
     if (!$manager->allAccountSettingsAreEntered()) {
         ?>
         <div class="error notice">
-            <p>It looks like you've not finished setting up your configuration yet! Please go to <a href="<?php echo $settings_url; ?>">Account Settings</a> to enter your Tollbridge account details.</p>
+            <p><?php _e('It looks like you\'ve not finished setting up your configuration yet! Please go to', 'tollbridge'); ?> <a href="<?php echo $settings_url; ?>"><?php _e('Account Settings', 'tollbridge'); ?></a> <?php _e('to enter your Tollbridge account details.', 'tollbridge'); ?></p>
         </div>
         <?php
     } elseif (!$manager->accountSettingsCanBeAuthenticated()) {
         ?>
         <div class="error notice">
-            <p>It looks like the <a href="<?php echo $settings_url; ?>">Account Settings</a> you've entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel.</p>
+            <p><?php _e('It looks like the', 'tollbridge'); ?> <a href="<?php echo $settings_url; ?>"><?php _e('Account Settings', 'tollbridge'); ?></a> <?php _e('you\'ve entered are not active. Please re-check that you can log into your Tollbridge account, and that you have correctly copied over the settings from the Integration panel.', 'tollbridge'); ?></p>
         </div>
         <?php
 
     } else {
         settings_errors(); ?>
-        <p>Configure how you want the paywall to behave on your site.</p>
+        <p><?php _e('Configure how you want the paywall to behave on your site.', 'tollbridge'); ?></p>
         <form method="POST" action="options.php">
             <?php
             settings_fields('tollbridge_paywall_paywall_config');

@@ -33,7 +33,7 @@ class Manager
 
     public function __construct()
     {
-        $this->client = new Client();
+        $this->client = Client::getInstance();
     }
 
 
@@ -90,7 +90,6 @@ class Manager
 
         return true;
     }
-
 
     /**
      * Get the list of plans which are applicable to the given post.
@@ -199,25 +198,20 @@ class Manager
 
     public function getRequirementsText($post)
     {
+        $config = $this->client->getConfig();
+
         $plans = $this->getApplicablePlans($post);
 
-        $requirements = 'You need';
-
         if (count($plans) == 1) {
-            $requirements = $plans[0]['plan'] . ' subscription required';
-        } else {
-            $first = true;
-
-            $last = array_pop($plans);
-
-            foreach ($plans as $plan) {
-                $requirements .= (($first) ? ' ' : ', ') . $plan['plan'];
-                $first = false;
-            }
-
-            $requirements .= ' or ' . $last['plan'] . ' subscription to access this page';
+            return str_replace("%plan%", $plans[0]['plan'], $config['paywall_widget_requirement']);
         }
 
-        return $requirements;
+        $last = array_pop($plans);
+
+        $plan = implode(', ', array_column($plans, 'plan'));
+
+        return str_replace("%otherPlan%", $last['plan'],
+            str_replace("%plan%", $plan, $config['paywall_widget_requirements'])
+        );
     }
 }
