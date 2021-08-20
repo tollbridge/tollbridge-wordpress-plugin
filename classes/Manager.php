@@ -187,7 +187,7 @@ class Manager
         return get_option('tollbridge_is_using_global_rules', false);
     }
 
-    public function getAccessRules($post)
+    public function getAccessRules($post): string
     {
         $plans = $this->getApplicablePlans($post);
 

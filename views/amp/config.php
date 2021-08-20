@@ -5,6 +5,8 @@
 $manager = new \Tollbridge\Paywall\Manager();
 
 if ($manager->allAccountSettingsAreEntered()) {
+    global $post;
+    $plans = $this->manager->getApplicablePlans($post);
     $views = $this->manager->getAmpViews();
     $appId = $this->manager->getAppId(); ?>
     <style amp-custom><?=$views['css']?></style>
@@ -12,7 +14,7 @@ if ($manager->allAccountSettingsAreEntered()) {
         {
             "type": "client",
             "authorization": "https://<?=$appId?>/amp/authorization?rid=READER_ID&url=CANONICAL_URL&ref=DOCUMENT_REFERRER&_=RANDOM",
-            "pingback": "https://<?=$appId?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&_=RANDOM",
+            "pingback": "https://<?=$appId?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&_=RANDOM&title=<?=get_the_title()?>&plans=<?=implode(',', array_column($plans, 'id'))?>",
             "login": "https://<?=$appId?>/plans?rid=READER_ID&url=CANONICAL_URL&redirect=RETURN_URL",
             "authorizationFallbackResponse": {
                 "plan": 0,
