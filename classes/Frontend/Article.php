@@ -160,17 +160,17 @@ class Article
             return;
         }
 
-        global $post;
-
-        $plans = $this->manager->getApplicablePlans($post);
-
-        if (empty($plans)) {
-            return;
-        }
-
         if (amp_is_request()) {
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/config.php';
         } else {
+            global $post;
+
+            $plans = $this->manager->getApplicablePlans($post);
+
+            if (empty($plans)) {
+                return;
+            }
+
             echo '<meta name="tollbridge" content="'.implode(', ', array_column($plans, 'id')).'"/>';
         }
     }
@@ -183,18 +183,19 @@ class Article
         if (!$this->isEligibleToShowPaywall()) {
             return;
         }
-        global $post;
 
-        $plans = $this->manager->getApplicablePlans($post);
-
-        if (empty($plans)) {
-            return;
-        }
-
-        if (!amp_is_request()) {
-            require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
+        if (amp_is_request()) {
+            require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets.php';
         } else {
-            require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/widgets.php';
+            global $post;
+
+            $plans = $this->manager->getApplicablePlans($post);
+
+            if (empty($plans)) {
+                return;
+            }
+
+            require_once plugin_dir_path(dirname(__FILE__)) . '/../views/frontend/js-payload.php';
         }
     }
 

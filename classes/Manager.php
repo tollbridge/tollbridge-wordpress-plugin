@@ -186,32 +186,4 @@ class Manager
     {
         return get_option('tollbridge_is_using_global_rules', false);
     }
-
-    public function getAccessRules($post): string
-    {
-        $plans = $this->getApplicablePlans($post);
-
-        return implode(' AND ', array_map(function ($plan) {
-            return 'plan != ' . $plan;
-        }, array_column($plans, 'id')));
-    }
-
-    public function getRequirementsText($post)
-    {
-        $config = $this->client->getConfig();
-
-        $plans = $this->getApplicablePlans($post);
-
-        if (count($plans) == 1) {
-            return str_replace("%plan%", $plans[0]['plan'], $config['paywall_widget_requirement']);
-        }
-
-        $last = array_pop($plans);
-
-        $plan = implode(', ', array_column($plans, 'plan'));
-
-        return str_replace("%otherPlan%", $last['plan'],
-            str_replace("%plan%", $plan, $config['paywall_widget_requirements'])
-        );
-    }
 }
