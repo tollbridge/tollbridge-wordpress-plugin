@@ -121,17 +121,13 @@ class Manager
             }
         }
 
-        // We have plan ids - need to hydrate them with plan names!
-        $planList = $this->client->getPlans();
         $hydratedPlans = [];
         foreach ($plans as $id) {
-            if (!empty($planList[$id])) {
-                $hydratedPlans[] = [
-                    'id' => $id,
-                    'plan' => $planList[$id],
-                ];
-            }
+            $hydratedPlans[] = [
+                'id' => $id,
+            ];
         }
+
         if (empty($hydratedPlans)) {
             $this->applicable_plans_cache = [];
             return [];

@@ -202,17 +202,15 @@ class Article
 
     public function addArticleBodyContentCode($content)
     {
-        // The wp_open_body hook is supported in this theme, and we've fired it already, no
-        // more work required!
-        if ($this->bodyOpenWasTriggered) {
-            return $content;
-        }
-
         if (amp_is_request()) {
-            ob_start();
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/view.php';
-            return ob_get_clean();
         } else {
+
+            // The wp_open_body hook is supported in this theme, and we've fired it already, no
+            // more work required!
+            if ($this->bodyOpenWasTriggered) {
+                return $content;
+            }
             ob_start();
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/frontend/js-payload.php';
             $payload = ob_get_clean();
