@@ -13,9 +13,9 @@ if ($manager->allAccountSettingsAreEntered()) {
     <script id="amp-access" type="application/json">
         {
             "type": "client",
-            "authorization": "https://<?=$appId?>/amp/authorization?rid=READER_ID&url=CANONICAL_URL&ref=DOCUMENT_REFERRER&_=RANDOM&plans=<?=implode(',', array_column($plans, 'id'))?>",
-            "pingback": "https://<?=$appId?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&_=RANDOM&title=<?=get_the_title()?>&plans=<?=implode(',', array_column($plans, 'id'))?>",
-            "login": "https://<?=$appId?>/plans?rid=READER_ID&url=CANONICAL_URL&redirect=RETURN_URL",
+            "authorization": "https://<?=$appId?>/amp/authorization?rid=READER_ID&url=CANONICAL_URL&amp_url=AMPDOC_URL&ref=DOCUMENT_REFERRER&_=RANDOM&plans=<?=implode(',', array_column($plans, 'id'))?>",
+            "pingback": "https://<?=$appId?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&amp_url=AMPDOC_URL&_=RANDOM&title=<?=get_the_title()?>&plans=<?=implode(',', array_column($plans, 'id'))?>",
+            "login": "https://<?=$appId?>/plans?rid=READER_ID&url=CANONICAL_URL&amp_url=AMPDOC_URL&redirect=RETURN_URL",
             "authorizationFallbackResponse": {
                 "plan": 0,
                 "subscriber": false,
@@ -27,5 +27,6 @@ if ($manager->allAccountSettingsAreEntered()) {
     <script async custom-template="amp-mustache" src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"></script>
     <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
     <script async custom-element="amp-access" src="https://cdn.ampproject.org/v0/amp-access-0.1.js"></script>
+    <script async custom-element="amp-form" src="https://cdn.ampproject.org/v0/amp-form-0.1.js"></script>
     <?php
 }
