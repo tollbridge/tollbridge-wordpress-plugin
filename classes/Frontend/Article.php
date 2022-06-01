@@ -160,7 +160,7 @@ class Article
             return;
         }
 
-        if (amp_is_request()) {
+        if (function_exists('amp_is_request') && amp_is_request()) {
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/config.php';
         } else {
             global $post;
@@ -184,7 +184,7 @@ class Article
             return;
         }
 
-        if (amp_is_request()) {
+        if (function_exists('amp_is_request') && amp_is_request()) {
             require_once plugin_dir_path(dirname(__FILE__)) . '/../views/amp/widgets.php';
         } else {
             global $post;
@@ -208,7 +208,7 @@ class Article
             return $content;
         }
 
-        if (amp_is_request()) {
+        if (function_exists('amp_is_request') && amp_is_request()) {
             ob_start();
             require_once plugin_dir_path(dirname(__FILE__)).'/../views/amp/view.php';
             return ob_get_clean();
