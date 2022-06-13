@@ -2,69 +2,63 @@
 
 namespace Tollbridge\Paywall\Settings;
 
+use Exception;
 use Tollbridge\Paywall\Manager;
 
-class Config
-{
+class Config {
+
     const ACCESS_CHANGE_FREE_TO_PAID = 'to_paid';
+
     const ACCESS_CHANGE_PAID_TO_FREE = 'to_free';
 
-    public function displaySettingsPage()
-    {
-        require_once plugin_dir_path(dirname(__FILE__)).'/../views/admin/paywall-config.php';
+    public function displaySettingsPage() {
+        require_once plugin_dir_path( __DIR__ ) . '/../views/admin/paywall-config.php';
     }
 
+    public function getApplicablePostTypes() {
+        $saved_post_types = get_option( 'tollbridge_applicable_post_types' );
 
-    public function getApplicablePostTypes()
-    {
-        $saved_post_types = get_option('tollbridge_applicable_post_types');
-        if (!is_array($saved_post_types)) {
+        if ( !is_array( $saved_post_types ) ) {
             $saved_post_types = [];
         }
 
         return $saved_post_types;
     }
 
+    public function getGlobalPlansWithAccess() {
+        $existing_plans = get_option( 'tollbridge_plans_with_access' );
 
-    public function getGlobalPlansWithAccess()
-    {
-        $existing_plans = get_option('tollbridge_plans_with_access');
-        if (!is_array($existing_plans)) {
+        if ( !is_array( $existing_plans ) ) {
             $existing_plans = [];
         }
 
         return $existing_plans;
     }
 
+    public function getGlobalUserTypesWithByPass() {
+        $bypass_users = get_option( 'tollbridge_user_types_with_bypass' );
 
-    public function getGlobalUserTypesWithByPass()
-    {
-        $bypass_users = get_option('tollbridge_user_types_with_bypass');
-        if (!is_array($bypass_users)) {
+        if ( !is_array( $bypass_users ) ) {
             $bypass_users = [];
         }
 
         return $bypass_users;
     }
 
-    public function getGlobalTimeAccessChange()
-    {
-        return get_option('tollbridge_time_access_change', false);
+    public function getGlobalTimeAccessChange() {
+        return get_option( 'tollbridge_time_access_change', false );
     }
 
-    public function getGlobalTimeAccessDelay()
-    {
-        return get_option('tollbridge_time_access_delay', 0);
+    public function getGlobalTimeAccessDelay() {
+        return get_option( 'tollbridge_time_access_delay', 0 );
     }
 
-    public function getGlobalTimeAccessChangeDirection()
-    {
-        return get_option('tollbridge_time_access_change_direction', self::ACCESS_CHANGE_PAID_TO_FREE);
+    public function getGlobalTimeAccessChangeDirection() {
+        return get_option( 'tollbridge_time_access_change_direction', self::ACCESS_CHANGE_PAID_TO_FREE );
     }
 
-    public function registerFields()
-    {
-        /**
+    public function registerFields() {
+        /*
          * First, we add_settings_section. This is necessary since all future settings must belong to one.
          * Second, add_settings_field
          * Third, register_setting
@@ -82,7 +76,7 @@ class Config
 
         add_settings_field(
             'tollbridge_applicable_post_type',
-            __('Apply to these post types', 'tollbridge'),
+            __( 'Apply to these post types', 'tollbridge' ),
             [$this, 'renderPostTypeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -92,10 +86,9 @@ class Config
             'tollbridge_applicable_post_types'
         );
 
-
         add_settings_field(
             'tollbridge_user_types_with_bypass',
-            __('Allow these user types to bypass paywall', 'tollbridge'),
+            __( 'Allow these user types to bypass paywall', 'tollbridge' ),
             [$this, 'renderUserBypassOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -107,7 +100,7 @@ class Config
 
         add_settings_field(
             'tollbridge_is_using_global_rules',
-            __('Apply settings globally', 'tollbridge'),
+            __( 'Apply settings globally', 'tollbridge' ),
             [$this, 'renderGlobalRadioOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -117,11 +110,9 @@ class Config
             'tollbridge_is_using_global_rules'
         );
 
-
-
         add_settings_field(
             'tollbridge_plans_with_access',
-            __('Only grant access to these plans', 'tollbridge'),
+            __( 'Only grant access to these plans', 'tollbridge' ),
             [$this, 'renderPlanOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -131,10 +122,9 @@ class Config
             'tollbridge_plans_with_access'
         );
 
-
         add_settings_field(
             'tollbridge_time_access_change',
-            __('Change paywall access over time', 'tollbridge'),
+            __( 'Change paywall access over time', 'tollbridge' ),
             [$this, 'renderTimeChangeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -146,7 +136,7 @@ class Config
 
         add_settings_field(
             'tollbridge_time_access_change',
-            __('Change paywall access over time', 'tollbridge'),
+            __( 'Change paywall access over time', 'tollbridge' ),
             [$this, 'renderTimeAccessChangeOptions'],
             'tollbridge_paywall_paywall_config',
             'tollbridge_paywall_config_global'
@@ -165,23 +155,22 @@ class Config
         );
     }
 
-
-    public function renderPostTypeOptions()
-    {
+    public function renderPostTypeOptions() {
         $saved_post_types = $this->getApplicablePostTypes();
-        $content = '<fieldset>';
+        $content          = '<fieldset>';
 
-        foreach (get_post_types(['public' => true]) as $post_type) {
-            $readable_post_type = get_post_type_object($post_type);
-            $checked = '';
-            if (in_array($post_type, $saved_post_types)) {
+        foreach ( get_post_types( ['public' => true] ) as $post_type ) {
+            $readable_post_type = get_post_type_object( $post_type );
+            $checked            = '';
+
+            if ( in_array( $post_type, $saved_post_types ) ) {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
                 <input type="checkbox" name="tollbridge_applicable_post_types[]" '
-                .'value="'.$post_type.'" '.$checked.'> '
-                .'<span>'.$readable_post_type->labels->singular_name.'</span>'
-                .'</label><br />';
+                . 'value="' . $post_type . '" ' . $checked . '> '
+                . '<span>' . $readable_post_type->labels->singular_name . '</span>'
+                . '</label><br />';
         }
 
         $content .= '</fieldset>';
@@ -189,49 +178,49 @@ class Config
         echo $content;
     }
 
-    public function renderGlobalRadioOptions()
-    {
-        $global = get_option('tollbridge_is_using_global_rules');
+    public function renderGlobalRadioOptions() {
+        $global = get_option( 'tollbridge_is_using_global_rules' );
         echo '<fieldset>
             <label>
-                <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="1" '.($global ? 'checked="checked"' : '').'> '
-                .'<span>' . __('Manage settings globally', 'tollbridge') . '</span>
+                <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="1" ' . ( $global ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Manage settings globally', 'tollbridge' ) . '</span>
             </label>
             <br />
             <label>
-                <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="0" '.(!$global ? 'checked="checked"' : '').'> '
-                .'<span>' . __('Manage settings per-article', 'tollbridge') . '</span>
+                <input type="radio" class="tollbridge_global_radio" name="tollbridge_is_using_global_rules" value="0" ' . ( !$global ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Manage settings per-article', 'tollbridge' ) . '</span>
             </label>
-            <p class="description">' . __('Global settings can be overridden on a per-article basis if required.', 'tollbridge') . '</p>
+            <p class="description">' . __( 'Global settings can be overridden on a per-article basis if required.', 'tollbridge' ) . '</p>
         </fieldset>';
     }
 
-
-    public function renderPlanOptions()
-    {
+    public function renderPlanOptions() {
         $existing_plans = $this->getGlobalPlansWithAccess();
 
         $manager = new Manager();
 
         try {
             $plans = $manager->getActivePlans();
-        } catch (\Exception $e) {
-            echo '<div class="error">' . __('Error retrieving plans', 'tollbridge') . ':' .$e->getMessage().'</div>';
-            echo '<fieldset class="tollbridge_global_option"><strong>'.$e->getMessage().'</strong></fieldset>';
+        } catch ( Exception $e ) {
+            echo '<div class="error">' . __( 'Error retrieving plans', 'tollbridge' ) . ':' . $e->getMessage() . '</div>';
+            echo '<fieldset class="tollbridge_global_option"><strong>' . $e->getMessage() . '</strong></fieldset>';
+
             return;
         }
 
         $content = '<fieldset class="tollbridge_global_option">';
-        foreach ($plans as $id => $plan) {
+
+        foreach ( $plans as $id => $plan ) {
             $checked = '';
-            if (in_array($id, $existing_plans)) {
+
+            if ( in_array( $id, $existing_plans ) ) {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
                 <input type="checkbox" name="tollbridge_plans_with_access[]" '
-                .'value="'.$id.'" '.$checked.'> '
-                .'<span>'.$plan.'</span>'
-                .'</label><br />';
+                . 'value="' . $id . '" ' . $checked . '> '
+                . '<span>' . $plan . '</span>'
+                . '</label><br />';
         }
 
         $content .= '</fieldset>';
@@ -239,23 +228,23 @@ class Config
         echo $content;
     }
 
-
-    public function renderUserBypassOptions()
-    {
+    public function renderUserBypassOptions() {
         $existing_users = $this->getGlobalUserTypesWithByPass();
-        $roles = get_editable_roles();
+        $roles          = get_editable_roles();
 
         $content = '<fieldset>';
-        foreach ($roles as $slug => $role) {
+
+        foreach ( $roles as $slug => $role ) {
             $checked = '';
-            if (in_array($slug, $existing_users)) {
+
+            if ( in_array( $slug, $existing_users ) ) {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
                 <input type="checkbox" name="tollbridge_user_types_with_bypass[]" '
-                .'value="'.$slug.'" '.$checked.'> '
-                .'<span>'.$role['name'].'</span>'
-                .'</label><br />';
+                . 'value="' . $slug . '" ' . $checked . '> '
+                . '<span>' . $role['name'] . '</span>'
+                . '</label><br />';
         }
 
         $content .= '</fieldset>';
@@ -263,44 +252,43 @@ class Config
         echo $content;
     }
 
-    public function renderTimeAccessChangeOptions()
-    {
+    public function renderTimeAccessChangeOptions() {
         $change = $this->getGlobalTimeAccessChange();
         echo '<fieldset class="tollbridge_global_option">
             <label>
-                <input type="radio" name="tollbridge_time_access_change" value="1" '.($change ? 'checked="checked"' : '').'> '
-                .'<span>' . __('Yes', 'tollbridge') . '</span>
+                <input type="radio" name="tollbridge_time_access_change" value="1" ' . ( $change ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Yes', 'tollbridge' ) . '</span>
             </label>
             <br />
             <label>
-                <input type="radio" name="tollbridge_time_access_change" value="0" '.(!$change ? 'checked="checked"' : '').'> '
-                .'<span>' . __('No', 'tollbridge') . '</span>
+                <input type="radio" name="tollbridge_time_access_change" value="0" ' . ( !$change ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'No', 'tollbridge' ) . '</span>
             </label>
         </fieldset>
         <br />
-        <fieldset class="tollbridge_time_access_dependent '.(!$change ? 'hidden' : '').'">
+        <fieldset class="tollbridge_time_access_dependent ' . ( !$change ? 'hidden' : '' ) . '">
             <label>
-                ' . __('After', 'tollbridge') . ' <input type="number" name="tollbridge_time_access_delay" '
-                .'value="'.$this->getGlobalTimeAccessDelay().'" min="0"> '
-                . __('days, change articles from', 'tollbridge') . ':
+                ' . __( 'After', 'tollbridge' ) . ' <input type="number" name="tollbridge_time_access_delay" '
+                . 'value="' . $this->getGlobalTimeAccessDelay() . '" min="0"> '
+                . __( 'days, change articles from', 'tollbridge' ) . ':
             </label>
         </fieldset>
         <br />';
 
         $direction = $this->getGlobalTimeAccessChangeDirection();
-        echo '<fieldset class="tollbridge_time_access_dependent '.(!$change ? 'hidden' : '').'">
+        echo '<fieldset class="tollbridge_time_access_dependent ' . ( !$change ? 'hidden' : '' ) . '">
             <label>
                 <input type="radio" name="tollbridge_time_access_change_direction" '
-                .'value="'.self::ACCESS_CHANGE_PAID_TO_FREE.'" '
-                .($direction == self::ACCESS_CHANGE_PAID_TO_FREE ? 'checked="checked"' : '').'> '
-                .'<span>' . __('Paywalled to free', 'tollbridge') . '</span>
+                . 'value="' . self::ACCESS_CHANGE_PAID_TO_FREE . '" '
+                . ( $direction == self::ACCESS_CHANGE_PAID_TO_FREE ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Paywalled to free', 'tollbridge' ) . '</span>
             </label>
             <br />
             <label>
                 <input type="radio" name="tollbridge_time_access_change_direction" '
-                .'value="'.self::ACCESS_CHANGE_FREE_TO_PAID.'" '
-                .($direction == self::ACCESS_CHANGE_FREE_TO_PAID ? 'checked="checked"' : '').'> '
-                .'<span>' . __('Free to paywalled', 'tollbridge') . '</span>
+                . 'value="' . self::ACCESS_CHANGE_FREE_TO_PAID . '" '
+                . ( $direction == self::ACCESS_CHANGE_FREE_TO_PAID ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Free to paywalled', 'tollbridge' ) . '</span>
             </label>
         </fieldset>';
     }

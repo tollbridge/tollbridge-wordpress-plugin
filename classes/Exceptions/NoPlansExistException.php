@@ -4,6 +4,6 @@ namespace Tollbridge\Paywall\Exceptions;
 
 use Exception;
 
-class ResponseErrorReceivedException extends Exception {
+class NoPlansExistException extends Exception {
 
 }
