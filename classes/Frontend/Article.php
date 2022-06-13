@@ -210,7 +210,7 @@ class Article {
         if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
             require_once plugin_dir_path( __DIR__ ) . '/../views/amp/view.php';
 
-            return ob_get_clean();
+            return '';
         }
 
         require_once plugin_dir_path( __DIR__ ) . '/../views/frontend/js-payload.php';
