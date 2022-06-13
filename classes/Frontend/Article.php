@@ -136,6 +136,10 @@ class Article {
     }
 
     public function addArticleMetaHeader() {
+        if ( $this->manager->isTrendingArticleActive() ) {
+            echo '<meta name="tollbridge:track" content="true" />';
+        }
+
         if ( !$this->isEligibleToShowPaywall() ) {
             return;
         }
