@@ -74,6 +74,26 @@ class Manager {
      * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
      * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
      */
+    public function isTrendingArticleActive() {
+        $config = $this->client->getConfig();
+
+        return array_key_exists( 'trending_article', $config ) && $config['trending_article'] == '1';
+    }
+
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     */
+    public function getPaywallTemplate() {
+        $config = $this->client->getConfig();
+
+        return array_key_exists( 'paywall_widget_style', $config ) ? $config['paywall_widget_style'] : null;
+    }
+
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     */
     public function getAmpViews() {
         return $this->client->getViews();
     }

@@ -92,11 +92,11 @@ class Client {
         return $data->access_token;
     }
 
-	/**
-	 * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-	 * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
-	 */
-	public function getConfig() {
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     */
+    public function getConfig() {
         if ( !empty( $this->config ) ) {
             return $this->config;
         }
@@ -105,7 +105,10 @@ class Client {
             throw new MissingConnectionSettingsException();
         }
 
-        $response = wp_remote_get( 'https://' . $this->appId . '/api/config' );
+        global $wp;
+        $response = wp_remote_get( 'https://' . $this->appId . '/api/config', [
+            'url' => add_query_arg( $wp->query_vars, home_url() ),
+        ] );
 
         if ( $response['response']['code'] != 200 ) {
             throw new ResponseErrorReceivedException( __( 'The Tollbridge server has returned an error', 'tollbridge' ) . ' (' . $response['response']['code'] . '). ' . __( 'Please try again later.', 'tollbridge' ) );

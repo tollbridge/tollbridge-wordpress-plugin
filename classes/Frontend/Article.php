@@ -2,6 +2,7 @@
 
 namespace Tollbridge\Paywall\Frontend;
 
+use Exception;
 use Tollbridge\Paywall\Manager;
 use Tollbridge\Paywall\Settings\Config;
 
@@ -119,7 +120,7 @@ class Article {
     }
 
     private function isEligibleToShowPaywall(): bool {
-        if ( !is_single() ) {
+        if ( !is_single() && !is_page() ) {
             return false;
         }
         global $post;
@@ -135,7 +136,16 @@ class Article {
         return true;
     }
 
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws Exception
+     */
     public function addArticleMetaHeader() {
+        if ( $this->manager->isTrendingArticleActive() ) {
+            echo '<meta name="tollbridge:track" content="true" />';
+        }
+
         if ( !$this->isEligibleToShowPaywall() ) {
             return;
         }
@@ -159,6 +169,9 @@ class Article {
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function addArticleBodyOpenCode() {
         $this->bodyOpenWasTriggered = true;
 
@@ -167,6 +180,10 @@ class Article {
         }
 
         if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
+            if ( $this->manager->getPaywallTemplate() == 'inline' ) {
+                $this->bodyOpenWasTriggered = false;
+            }
+
             require_once plugin_dir_path( __DIR__ ) . '/../views/amp/widgets.php';
         } else {
             global $post;
@@ -188,17 +205,17 @@ class Article {
             return $content;
         }
 
+        ob_start();
+
         if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
-            ob_start();
             require_once plugin_dir_path( __DIR__ ) . '/../views/amp/view.php';
 
-            return ob_get_clean();
-        } else {
-            ob_start();
-            require_once plugin_dir_path( __DIR__ ) . '/../views/frontend/js-payload.php';
-            $payload = ob_get_clean();
-
-            return $payload . $content;
+            return '';
         }
+
+        require_once plugin_dir_path( __DIR__ ) . '/../views/frontend/js-payload.php';
+        $payload = ob_get_clean();
+
+        return $payload . $content;
     }
 }
