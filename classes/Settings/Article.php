@@ -63,7 +63,13 @@ class Article {
     public function saveCustomMetaBox() {
         global $post;
 
-        foreach ( $_POST as $key => $value ) {
+        $requestData = $_POST;
+
+        if ( empty( $requestData['tollbridge_plans_with_access'] ) ) {
+            $requestData['tollbridge_plans_with_access'] = [];
+        }
+
+        foreach ( $requestData as $key => $value ) {
             if ( !preg_match( '/^tollbridge_/', $key ) ) {
                 continue;
             }
