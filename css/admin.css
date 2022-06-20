@@ -2,7 +2,7 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
-.menu-top.toplevel_page_tollbridge-paywall {
+.menu-top.toplevel_page_tollbridge-paywall div.wp-menu-image.svg {
     min-height: 50px;
 }
 
