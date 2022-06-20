@@ -1,8 +1,7 @@
-
-var listen = document.querySelectorAll("[name='tollbridge_time_access_change']");
+var listen = document.querySelectorAll('[name=\'tollbridge_time_access_change\']');
 if (listen.length) {
-    listen.forEach(function(node) {
-        node.addEventListener("click", function(event) {
+    listen.forEach(function (node) {
+        node.addEventListener('click', function (event) {
             toggleTimeVisibility((this.value == 0));
         });
     });
@@ -17,18 +16,17 @@ if (listen.length) {
     });
 
     if (document.querySelector('[name="tollbridge_is_using_global_rules"]:checked')) {
-        if (document.querySelector('[name="tollbridge_is_using_global_rules"]:checked').value != "1") {
+        if (document.querySelector('[name="tollbridge_is_using_global_rules"]:checked').value != '1') {
             toggleGlobalDependencies(true);
         }
     }
     document.querySelectorAll('.tollbridge_global_radio').forEach(function (item) {
-        item.addEventListener("click", function(event) {
+        item.addEventListener('click', function (event) {
             toggleGlobalDependencies(this.value != 1);
         });
     });
 
-    function toggleGlobalDependencies(hide)
-    {
+    function toggleGlobalDependencies(hide) {
         var dependents = document.querySelectorAll('.tollbridge_global_option');
         dependents.forEach(function (item) {
             if (hide) {
@@ -39,14 +37,13 @@ if (listen.length) {
         });
     }
 
-    function toggleTimeVisibility(hide)
-    {
-        var items = document.querySelectorAll(".tollbridge_time_access_dependent");
-        items.forEach(function(node) {
+    function toggleTimeVisibility(hide) {
+        var items = document.querySelectorAll('.tollbridge_time_access_dependent');
+        items.forEach(function (node) {
             if (hide) {
-                node.classList.add("hidden");
+                node.classList.add('hidden');
             } else {
-                node.classList.remove("hidden");
+                node.classList.remove('hidden');
             }
         });
     }
@@ -54,7 +51,7 @@ if (listen.length) {
 
 
 document.querySelectorAll('[name="tollbridge_override_global_rules"]').forEach(function (item) {
-    item.addEventListener("click", function(event) {
+    item.addEventListener('click', function (event) {
         document.querySelector('.tollbridge-override-settings').classList.toggle('hidden');
     });
 });

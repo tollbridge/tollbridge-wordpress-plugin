@@ -7,11 +7,11 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin adds Tollbridge.co paywall integration to your Wordpress site.
+This plugin adds Tollbridge.co paywall integration to your WordPress site.
 
 == Description ==
 
-This plugin integrates Tollbridge.co paywall rules to an existing Wordpress site.
+This plugin integrates Tollbridge.co paywall rules to an existing WordPress site.
 
 == Installation ==
 

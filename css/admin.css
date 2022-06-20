@@ -2,6 +2,10 @@
  * All of the CSS for your admin-specific functionality should be
  * included in this file.
  */
+.menu-top.toplevel_page_tollbridge-paywall {
+    min-height: 50px;
+}
+
 .menu-top.toplevel_page_tollbridge-paywall .wp-menu-image.dashicons-before > img {
     max-width: 16px;
 }

@@ -4,18 +4,18 @@
  */
 $manager = new \Tollbridge\Paywall\Manager();
 
-if ($manager->allAccountSettingsAreEntered()) {
+if ( $manager->allAccountSettingsAreEntered() ) {
     global $post;
-    $plans = $this->manager->getApplicablePlans($post);
+    $plans = $this->manager->getApplicablePlans( $post );
     $views = $this->manager->getAmpViews();
     $appId = $this->manager->getAppId(); ?>
-    <style amp-custom><?=$views['css']?></style>
+    <style amp-custom><?php echo $views['css']; ?></style>
     <script id="amp-access" type="application/json">
         {
             "type": "client",
-            "authorization": "https://<?=$appId?>/amp/authorization?rid=READER_ID&url=CANONICAL_URL&ref=DOCUMENT_REFERRER&_=RANDOM&plans=<?=implode(',', array_column($plans, 'id'))?>",
-            "pingback": "https://<?=$appId?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&_=RANDOM&title=<?=get_the_title()?>&plans=<?=implode(',', array_column($plans, 'id'))?>",
-            "login": "https://<?=$appId?>/plans?rid=READER_ID&url=CANONICAL_URL&redirect=RETURN_URL",
+            "authorization": "https://<?php echo $appId; ?>/amp/authorization?rid=READER_ID&url=CANONICAL_URL&ref=DOCUMENT_REFERRER&_=RANDOM&plans=<?php echo implode( ',', array_column( $plans, 'id' ) ); ?>",
+            "pingback": "https://<?php echo $appId; ?>/amp/ping-back?rid=READER_ID&ref=DOCUMENT_REFERRER&url=CANONICAL_URL&_=RANDOM&title=<?php echo get_the_title(); ?>&plans=<?php echo implode( ',', array_column( $plans, 'id' ) ); ?>",
+            "login": "https://<?php echo $appId; ?>/plans?rid=READER_ID&url=CANONICAL_URL&redirect=RETURN_URL",
             "authorizationFallbackResponse": {
                 "plan": 0,
                 "subscriber": false,

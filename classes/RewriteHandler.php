@@ -40,7 +40,7 @@ class RewriteHandler {
 
     public function loadCustomRegistrationRedirectTemplate( $template ) {
         global $wp_query;
-        $page_value = array_key_exists($this->query_var, $wp_query->query_vars) ? $wp_query->query_vars[$this->query_var] : null;
+        $page_value = array_key_exists( $this->query_var, $wp_query->query_vars ) ? $wp_query->query_vars[$this->query_var] : null;
 
         if ( $page_value && $page_value == 'true' ) {
             return plugin_dir_path( __DIR__ ) . 'views/frontend/callback.php';

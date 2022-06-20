@@ -1,8 +1,8 @@
-# Tollbridge.co Wordpress Plugin.
+# Tollbridge.co WordPress Plugin.
 
 ## Installation
 
-Download this project as a ZIP file. Within the Wordpress plugins section, upload the plugin, then activate it from the list of plugins.
+Download this project as a ZIP file. Within the WordPress plugins section, upload the plugin, then activate it from the list of plugins.
 
 ## Activation
 A [Tollbridge.co](https://www.tollbridge.co) account is required. You'll need the App ID, Client ID and Client Secret from the Tollbridge Integrations section.

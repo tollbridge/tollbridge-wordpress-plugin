@@ -2,11 +2,8 @@
 /**
  * Dynamically loads the class attempting to be instantiated elsewhere in the
  * plugin.
- *
- * @package Tollbridge\Paywall
  */
-
-spl_autoload_register('tollbridge_paywall_namespace_autoload');
+spl_autoload_register( 'tollbridge_paywall_namespace_autoload' );
 
 /**
  * Dynamically loads the class attempting to be instantiated elsewhere in the
@@ -18,29 +15,28 @@ spl_autoload_register('tollbridge_paywall_namespace_autoload');
  *
  * The namespaces in this plugin map to the paths in the directory structure.
  *
- * @param string $class_name The fully-qualified name of the class to load.
+ * @param string $class_name the fully-qualified name of the class to load
  */
-function tollbridge_paywall_namespace_autoload($class_name)
-{
+function tollbridge_paywall_namespace_autoload( $class_name ) {
     // If the specified $class_name does not include our namespace, duck out.
-    if (false === strpos($class_name, 'Tollbridge\Paywall')) {
+    if ( false === strpos( $class_name, 'Tollbridge\Paywall' ) ) {
         return;
     }
 
     // Split the class name into an array to read the namespace and class.
-    $file_parts = explode('\\', str_replace('Tollbridge\\Paywall\\', '', $class_name));
-    $file = implode(DIRECTORY_SEPARATOR, $file_parts);
+    $file_parts = explode( '\\', str_replace( 'Tollbridge\\Paywall\\', '', $class_name ) );
+    $file       = implode( DIRECTORY_SEPARATOR, $file_parts );
 
     // Now build a path to the file using mapping to the file location.
-    $filepath  = trailingslashit(dirname(__FILE__)).'classes/'.$file.'.php';
+    $filepath = trailingslashit( __DIR__ ) . 'classes/' . $file . '.php';
 
     // If the file exists in the specified path, then include it.
-    if (file_exists($filepath)) {
-        include_once($filepath);
+    if ( file_exists( $filepath ) ) {
+        include_once $filepath;
     } else {
         echo $class_name;
         wp_die(
-            esc_html("The file attempting to be loaded at $filepath does not exist.")
+            esc_html( "The file attempting to be loaded at $filepath does not exist." )
         );
     }
 }

@@ -66,6 +66,17 @@ class Manager {
      * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
      * @throws \Tollbridge\Paywall\Exceptions\NoPlansExistException
      */
+    public function getConfig( $key, $default = null ) {
+        $config = $this->client->getConfig();
+
+        return array_key_exists( $key, $config ) ? $config[$key] : $default;
+    }
+
+    /**
+     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws \Tollbridge\Paywall\Exceptions\NoPlansExistException
+     */
     public function getActivePlans() {
         return $this->client->getPlans();
     }
@@ -174,13 +185,13 @@ class Manager {
         // Enough days passed to trigger time logic
         if ( $diff->days >= $timeAccessDays ) {
             // Are we going from paid to free?
-            if ( $timeAccessDirection == Config::ACCESS_CHANGE_PAID_TO_FREE ) {
+            if ( $timeAccessDirection === Config::ACCESS_CHANGE_PAID_TO_FREE ) {
                 // No restriction!
                 $this->applicable_plans_cache = [];
             }
         } else {
             // Starting free before going paid later
-            if ( $timeAccessDirection == Config::ACCESS_CHANGE_FREE_TO_PAID ) {
+            if ( $timeAccessDirection === Config::ACCESS_CHANGE_FREE_TO_PAID ) {
                 $this->applicable_plans_cache = [];
             }
         }
