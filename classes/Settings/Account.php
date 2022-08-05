@@ -94,5 +94,27 @@ class Account {
             'tollbridge_paywall_account_settings',
             'tollbridge_client_secret'
         );
+
+	    add_settings_field(
+		    'tollbridge_config_base',
+		    __( 'Config Base Url', 'tollbridge' ),
+		    [$this, 'render_settings_field'],
+		    'tollbridge_paywall_account_settings',
+		    'tollbridge_account_settings_general_section',
+		    [
+			    'type'             => 'input',
+			    'subtype'          => 'text',
+			    'id'               => 'tollbridge_config_base',
+			    'name'             => 'tollbridge_config_base',
+			    'required'         => false,
+			    'get_options_list' => '',
+			    'value_type'       => 'normal',
+			    'wp_data'          => 'option',
+		    ]
+	    );
+	    register_setting(
+		    'tollbridge_paywall_account_settings',
+		    'tollbridge_config_base'
+	    );
     }
 }

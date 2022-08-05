@@ -57,6 +57,10 @@ class Manager {
         return count( array_filter( $fields ) ) == 3;
     }
 
+    public function getConfigBase(): string {
+        return trim( get_option( 'tollbridge_config_base' ) ) ?: 'config.tollbridge.co';
+    }
+
     public function getCallbackUrl(): string {
         return get_home_url() . '/' . self::AUTHENTICATION_CALLBACK_SLUG;
     }

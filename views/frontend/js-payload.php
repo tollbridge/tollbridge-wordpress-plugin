@@ -10,6 +10,7 @@ if ($manager->allAccountSettingsAreEntered()) {
     <tollbridge-config
         app-id="<?php echo $manager->getAppId(); ?>"
         client-id="<?php echo $manager->getClientId(); ?>"
+        config-base="<?php echo $manager->getConfigBase(); ?>"
         callback-url="<?php echo $manager->getCallbackUrl(); ?>"></tollbridge-config>
     <?php
 }
