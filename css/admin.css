@@ -15,3 +15,13 @@
 input[name=tollbridge_time_access_delay] {
     max-width: 30%;
 }
+
+#toplevel_page_tollbridge-paywall > a:first-child {
+    display: flex;
+    align-items: center;
+}
+
+#toplevel_page_tollbridge-paywall > a:first-child .wp-menu-name {
+    padding-right: 0;
+    padding-left: 0;
+}
