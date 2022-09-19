@@ -55,3 +55,19 @@ document.querySelectorAll('[name="tollbridge_override_global_rules"]').forEach(f
         document.querySelector('.tollbridge-override-settings').classList.toggle('hidden');
     });
 });
+
+const selectAllCheckbox = (selector) => {
+    let checkboxes = document.querySelectorAll(selector);
+
+    for (let checkbox of checkboxes) {
+        checkbox.checked = true;
+    }
+}
+
+const unselectAllCheckbox = (selector) => {
+    let checkboxes = document.querySelectorAll(selector);
+
+    for (let checkbox of checkboxes) {
+        checkbox.checked = false;
+    }
+}

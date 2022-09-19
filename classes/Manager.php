@@ -13,7 +13,7 @@ use WP_Post;
  */
 class Manager {
 
-    const AUTHENTICATION_CALLBACK_SLUG = 'tollbridge-callback';
+	const AUTHENTICATION_CALLBACK_SLUG = 'tollbridge-callback';
 
     /**
      * @var \Tollbridge\Paywall\Client
@@ -34,15 +34,15 @@ class Manager {
         $this->client = Client::getInstance();
     }
 
-    public function getAppId() {
+    public function getAppId(): string {
         return trim( get_option( 'tollbridge_app_id' ) );
     }
 
-    public function getClientId() {
+    public function getClientId(): string {
         return trim( get_option( 'tollbridge_client_id' ) );
     }
 
-    public function getClientSecret() {
+    public function getClientSecret(): string {
         return trim( get_option( 'tollbridge_client_secret' ) );
     }
 
@@ -57,18 +57,25 @@ class Manager {
         return count( array_filter( $fields ) ) == 3;
     }
 
+    public function getDefaultConfigBase(): string {
+        return 'config.tollbridge.co';
+    }
+
     public function getConfigBase(): string {
         return trim( get_option( 'tollbridge_config_base' ) ) ?: 'config.tollbridge.co';
     }
 
-    public function getCallbackUrl(): string {
+    public function getDefaultCallbackUrl(): string {
         return get_home_url() . '/' . self::AUTHENTICATION_CALLBACK_SLUG;
+    }
+
+    public function getCallbackUrl(): string {
+        return trim( get_option( 'tollbridge_callback_url' ) ) ?: ( get_home_url() . '/' . self::AUTHENTICATION_CALLBACK_SLUG );
     }
 
     /**
      * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
      * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
-     * @throws \Tollbridge\Paywall\Exceptions\NoPlansExistException
      */
     public function getConfig( $key, $default = null ) {
         $config = $this->client->getConfig();
@@ -89,7 +96,7 @@ class Manager {
      * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
      * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
      */
-    public function isTrendingArticleActive() {
+    public function isTrendingArticleActive(): bool {
         $config = $this->client->getConfig();
 
         return array_key_exists( 'trending_article', $config ) && $config['trending_article'] == '1';

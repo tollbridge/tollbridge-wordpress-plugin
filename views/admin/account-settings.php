@@ -27,13 +27,15 @@ $manager = new \Tollbridge\Paywall\Manager();
         <?php
         settings_fields( 'tollbridge_paywall_account_settings' );
         do_settings_sections( 'tollbridge_paywall_account_settings' );
+
+        if (!get_option('tollbridge_advanced_mode')) :
         ?>
         <table class="form-table" role="presentation">
             <tbody>
                 <tr>
                     <th scope="row"><?php _e( 'Callback URL', 'tollbridge' ); ?></th>
                     <td>
-                        <input type="text" size="40" disabled value="<?php echo $manager->getCallbackUrl(); ?>">
+                        <input type="text" size="40" readonly value="<?php echo $manager->getCallbackUrl(); ?>" onClick="this.select();">
                         <br />
                         <small><i><?php _e( 'Copy this value to the "Callback URL" field in your Tollbridge "Integrations" panel.', 'tollbridge' ); ?></i></small>
                     </td>
@@ -41,6 +43,7 @@ $manager = new \Tollbridge\Paywall\Manager();
             </tbody>
         </table>
         <?php
+        endif;
         submit_button();
         ?>
     </form>

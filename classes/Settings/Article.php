@@ -8,9 +8,6 @@ use Tollbridge\Paywall\Manager;
  * Handle drawing of the article meta box, and saving settings submitted from there.
  */
 class Article {
-
-    private $bodyOpenWasTriggered = false;
-
     public function __construct() {
         $this->manager = new Manager();
         $this->config  = new Config();
@@ -20,6 +17,14 @@ class Article {
     }
 
     public function addArticleMetaBoxHook() {
+	    global $post;
+	    $applicable_types = $this->config->getApplicablePostTypes();
+
+		// Hide whole metabox if the post type is not selected
+	    if ( !in_array( $post->post_type, $applicable_types ) ) {
+		    return;
+	    }
+
         add_meta_box(
             'tollbridge-metabox',
             'Tollbridge Paywall Settings',
@@ -50,13 +55,6 @@ class Article {
     }
 
     public function displayArticleMetaBox() {
-        global $post;
-        $applicable_types = $this->config->getApplicablePostTypes();
-
-        if ( !in_array( $post->post_type, $applicable_types ) ) {
-            return;
-        }
-
         require_once plugin_dir_path( __DIR__ ) . '/../views/admin/article-meta.php';
     }
 
@@ -70,7 +68,7 @@ class Article {
         }
 
         foreach ( $requestData as $key => $value ) {
-            if ( !preg_match( '/^tollbridge_/', $key ) ) {
+            if ( 0 !== strpos( $key, "tollbridge_" ) ) {
                 continue;
             }
             update_post_meta( $post->ID, $key, $value );

@@ -2,6 +2,7 @@
 
 namespace Tollbridge\Paywall\Settings;
 
+use Tollbridge\Paywall\Manager;
 use Tollbridge\Paywall\Traits\SettingsField;
 
 class Account {
@@ -95,26 +96,81 @@ class Account {
             'tollbridge_client_secret'
         );
 
-	    add_settings_field(
-		    'tollbridge_config_base',
-		    __( 'Config Base Url', 'tollbridge' ),
-		    [$this, 'render_settings_field'],
-		    'tollbridge_paywall_account_settings',
-		    'tollbridge_account_settings_general_section',
-		    [
-			    'type'             => 'input',
-			    'subtype'          => 'text',
-			    'id'               => 'tollbridge_config_base',
-			    'name'             => 'tollbridge_config_base',
-			    'required'         => false,
-			    'get_options_list' => '',
-			    'value_type'       => 'normal',
-			    'wp_data'          => 'option',
-		    ]
-	    );
-	    register_setting(
-		    'tollbridge_paywall_account_settings',
-		    'tollbridge_config_base'
-	    );
+        add_settings_field(
+            'tollbridge_advanced_mode',
+            __( 'Enable Advanced Mode?', 'tollbridge' ),
+            [$this, 'render_settings_field'],
+            'tollbridge_paywall_account_settings',
+            'tollbridge_account_settings_general_section',
+            [
+                'type'             => 'input',
+                'subtype'          => 'checkbox',
+                'id'               => 'tollbridge_advanced_mode',
+                'name'             => 'tollbridge_advanced_mode',
+                'required'         => false,
+                'get_options_list' => '',
+                'value_type'       => 'normal',
+                'wp_data'          => 'option',
+                'description'      => __('Yes'),
+                'sub-description'      => __('Enabling this will trigger advanced options and Tollbridge functionality such as change config base url or change callback url.'),
+            ]
+        );
+        register_setting(
+            'tollbridge_paywall_account_settings',
+            'tollbridge_advanced_mode'
+        );
+
+        if ( get_option( 'tollbridge_advanced_mode' ) ) {
+            $manager = new Manager();
+
+	        add_settings_field(
+		        'tollbridge_callback_url',
+		        __( 'Callback Url', 'tollbridge' ),
+		        [ $this, 'render_settings_field' ],
+		        'tollbridge_paywall_account_settings',
+		        'tollbridge_account_settings_general_section',
+		        [
+			        'type'             => 'input',
+			        'subtype'          => 'text',
+			        'id'               => 'tollbridge_callback_url',
+			        'name'             => 'tollbridge_callback_url',
+			        'required'         => false,
+			        'get_options_list' => '',
+			        'value_type'       => 'normal',
+			        'wp_data'          => 'option',
+			        'placeholder'      => $manager->getDefaultCallbackUrl(),
+			        'set-default'      => $manager->getDefaultCallbackUrl(),
+			        'description'      => __( 'Copy this value to the "Callback URL" field in your Tollbridge "Integrations" panel.', 'tollbridge' ),
+		        ]
+	        );
+	        register_setting(
+		        'tollbridge_paywall_account_settings',
+		        'tollbridge_callback_url'
+	        );
+
+            add_settings_field(
+                'tollbridge_config_base',
+                __( 'Config Base Url', 'tollbridge' ),
+                [ $this, 'render_settings_field' ],
+                'tollbridge_paywall_account_settings',
+                'tollbridge_account_settings_general_section',
+                [
+                    'type'             => 'input',
+                    'subtype'          => 'text',
+                    'id'               => 'tollbridge_config_base',
+                    'name'             => 'tollbridge_config_base',
+                    'required'         => false,
+                    'get_options_list' => '',
+                    'value_type'       => 'normal',
+                    'wp_data'          => 'option',
+                    'placeholder'      => $manager->getDefaultConfigBase(),
+                    'set-default'      => $manager->getDefaultConfigBase(),
+                ]
+            );
+            register_setting(
+                'tollbridge_paywall_account_settings',
+                'tollbridge_config_base'
+            );
+        }
     }
 }

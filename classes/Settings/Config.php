@@ -83,7 +83,11 @@ class Config {
         );
         register_setting(
             'tollbridge_paywall_paywall_config',
-            'tollbridge_applicable_post_types'
+            'tollbridge_applicable_post_types',
+	        [
+				'type' => 'array',
+		        'sanitize_callback' => [$this, 'sanitizePostTypeOptions'],
+	        ]
         );
 
         add_settings_field(
@@ -158,6 +162,8 @@ class Config {
     public function renderPostTypeOptions() {
         $saved_post_types = $this->getApplicablePostTypes();
         $content          = '<fieldset>';
+        $content          .= '<a style="margin-right: 1rem" href="javascript:void(0)" onClick="selectAllCheckbox(\'.tollbridge-applicable-post-types\')">Select all</a>';
+        $content          .= '<a href="javascript:void(0)" onClick="unselectAllCheckbox(\'.tollbridge-applicable-post-types\')">Unselect all</a><br>';
 
         foreach ( get_post_types( ['public' => true] ) as $post_type ) {
             $readable_post_type = get_post_type_object( $post_type );
@@ -167,7 +173,7 @@ class Config {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
-                <input type="checkbox" name="tollbridge_applicable_post_types[]" '
+                <input type="checkbox" class="tollbridge-applicable-post-types" name="tollbridge_applicable_post_types[]" '
                 . 'value="' . $post_type . '" ' . $checked . '> '
                 . '<span>' . $readable_post_type->labels->singular_name . '</span>'
                 . '</label><br />';
@@ -177,6 +183,16 @@ class Config {
 
         echo $content;
     }
+
+	public function sanitizePostTypeOptions($data) {
+		if (empty($data)) {
+			add_settings_error('tollbridge_applicable_post_types', 'tollbridge_applicable_post_type', __('At least one post type must be chosen.'));
+
+			$data = get_option('tollbridge_applicable_post_types');
+		}
+
+		return $data;
+	}
 
     public function renderGlobalRadioOptions() {
         $global = get_option( 'tollbridge_is_using_global_rules' );
@@ -209,6 +225,8 @@ class Config {
         }
 
         $content = '<fieldset class="tollbridge_global_option">';
+	    $content .= '<a style="margin-right: 1rem" href="javascript:void(0)" onClick="selectAllCheckbox(\'.tollbridge-plans-access\')">Select all</a>';
+	    $content .= '<a href="javascript:void(0)" onClick="unselectAllCheckbox(\'.tollbridge-plans-access\')">Unselect all</a><br>';
 
         foreach ( $plans as $id => $plan ) {
             $checked = '';
@@ -217,7 +235,7 @@ class Config {
                 $checked = ' checked="checked"';
             }
             $content .= '<label>
-                <input type="checkbox" name="tollbridge_plans_with_access[]" '
+                <input type="checkbox" class="tollbridge-plans-access" name="tollbridge_plans_with_access[]" '
                 . 'value="' . $id . '" ' . $checked . '> '
                 . '<span>' . $plan . '</span>'
                 . '</label><br />';
