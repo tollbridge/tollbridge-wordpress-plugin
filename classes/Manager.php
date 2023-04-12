@@ -14,6 +14,9 @@ use WP_Post;
 class Manager {
 
 	const AUTHENTICATION_CALLBACK_SLUG = 'tollbridge-callback';
+    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS = 2;
+    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL = 1;
+    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS = 0;
 
     /**
      * @var \Tollbridge\Paywall\Client
@@ -226,5 +229,24 @@ class Manager {
 
     public function globalSettingsAreActive() {
         return get_option( 'tollbridge_is_using_global_rules', false );
+    }
+
+    public function getPaywallEligibilityCheckBehavior() {
+        return intval(
+            get_option(
+                'tollbridge_paywall_eligibility_check_behaviour',
+                self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS)
+        );
+    }
+
+    public function allowAllLoggedInUsers(WP_Post $post) : bool {
+        $article = new Article();
+        $article->setId( $post->ID );
+
+        if ( $this->globalSettingsAreActive() && !$article->hasMetaOverride() ) {
+            return $this->getPaywallEligibilityCheckBehavior() === self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS;
+        } 
+            
+        return $article->getPaywallEligibilityCheckBehavior() === self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS;
     }
 }

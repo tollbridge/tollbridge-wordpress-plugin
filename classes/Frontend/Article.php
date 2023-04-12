@@ -9,7 +9,8 @@ use Tollbridge\Paywall\Settings\Config;
 /**
  * Handle drawing of the article meta box, and saving settings submitted from there.
  */
-class Article {
+class Article
+{
 
     /**
      * @var bool
@@ -26,40 +27,43 @@ class Article {
      */
     private $meta = [];
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->manager = new Manager();
         $this->config  = new Config();
 
-        add_action( 'wp_head', [$this, 'addArticleMetaHeader'] );
+        add_action('wp_head', [$this, 'addArticleMetaHeader']);
         // Adding the js via body_open is the cleanest way, but that hook does not
         // have widespread dev support yet, so add a fallback.
-        add_action( 'wp_body_open', [$this, 'addArticleBodyOpenCode'] );
-        add_filter( 'the_content', [$this, 'addArticleBodyContentCode'], 10, 1 );
+        add_action('wp_body_open', [$this, 'addArticleBodyOpenCode']);
+        add_filter('the_content', [$this, 'addArticleBodyContentCode'], 10, 1);
     }
 
-    public function setId( int $id ) {
+    public function setId(int $id)
+    {
         $this->id   = $id;
-        $this->meta = $this->getArticleMeta( $id );
+        $this->meta = $this->getArticleMeta($id);
     }
 
-    public function getArticleMeta( int $id ) {
-        $meta       = get_post_meta( $id );
+    public function getArticleMeta(int $id)
+    {
+        $meta       = get_post_meta($id);
         $serialised = [
             'tollbridge_plans_with_access',
             'tollbridge_user_types_with_bypass',
         ];
         $stored = [];
 
-        foreach ( $meta as $key => $value ) {
-            if ( !preg_match( '#^tollbridge_#', $key ) ) {
+        foreach ($meta as $key => $value) {
+            if (!preg_match('#^tollbridge_#', $key)) {
                 continue;
             }
             $stored[$key] = $value[0];
 
-            if ( in_array( $key, $serialised ) ) {
-                $stored[$key] = @unserialize( $stored[$key] );
+            if (in_array($key, $serialised)) {
+                $stored[$key] = @unserialize($stored[$key]);
 
-                if ( !is_array( $stored[$key] ) ) {
+                if (!is_array($stored[$key])) {
                     $stored[$key] = [];
                 }
             }
@@ -68,72 +72,100 @@ class Article {
         return $stored;
     }
 
-    public function hasMetaOverride(): bool {
+    public function hasMetaOverride(): bool
+    {
         return $this->meta['tollbridge_override_global_rules'] ?? false;
     }
 
-    public function getPlansWithAccess(): array {
-        if ( !isset( $this->meta['tollbridge_plans_with_access'] )
-            || !is_array( $this->meta['tollbridge_plans_with_access'] ) ) {
+    public function getPlansWithAccess(): array
+    {
+        if (
+            !isset($this->meta['tollbridge_plans_with_access'])
+            || !is_array($this->meta['tollbridge_plans_with_access'])
+        ) {
             $this->meta['tollbridge_plans_with_access'] = [];
         }
 
         return $this->meta['tollbridge_plans_with_access'];
     }
 
-    public function getTimeAccessChange(): bool {
-        if ( !isset( $this->meta['tollbridge_time_access_change'] ) ) {
+    public function getTimeAccessChange(): bool
+    {
+        if (!isset($this->meta['tollbridge_time_access_change'])) {
             $this->meta['tollbridge_time_access_change'] = false;
         }
 
         return (bool) $this->meta['tollbridge_time_access_change'];
     }
 
-    public function getTimeAccessDelay(): int {
-        if ( !isset( $this->meta['tollbridge_time_access_delay'] ) ) {
+    public function getTimeAccessDelay(): int
+    {
+        if (!isset($this->meta['tollbridge_time_access_delay'])) {
             $this->meta['tollbridge_time_access_delay'] = 0;
         }
 
         return (int) $this->meta['tollbridge_time_access_delay'];
     }
 
-    public function getTimeAccessChangeDirection(): string {
-        if ( !isset( $this->meta['tollbridge_time_access_change_direction'] ) ) {
+    public function getTimeAccessChangeDirection(): string
+    {
+        if (!isset($this->meta['tollbridge_time_access_change_direction'])) {
             $this->meta['tollbridge_time_access_change_direction'] = Config::ACCESS_CHANGE_PAID_TO_FREE;
         }
 
         return $this->meta['tollbridge_time_access_change_direction'];
     }
 
-    private function userCanBypassPaywall(): bool {
-        if ( !is_user_logged_in() ) {
+    private function userCanBypassPaywall(): bool
+    {
+        if (!is_user_logged_in()) {
             return false;
         }
 
-        $meta = get_userdata( get_current_user_id() );
+        $meta = get_userdata(get_current_user_id());
 
-        if ( empty( $meta->roles ) ) {
+        if (empty($meta->roles)) {
             return false;
         }
 
-        return count( array_intersect( $meta->roles, $this->manager->getUserTypesWithBypass() ) ) > 0;
+        return count(array_intersect($meta->roles, $this->manager->getUserTypesWithBypass())) > 0;
     }
 
-    private function isEligibleToShowPaywall(): bool {
-        if ( !is_single() && !is_page() ) {
+    private function isEligibleToShowPaywall(): bool
+    {
+        if (!is_single() && !is_page()) {
             return false;
         }
         global $post;
 
-        if ( !in_array( $post->post_type, $this->config->getApplicablePostTypes() ) ) {
+        $this->setId($post->ID);
+
+        if (!in_array($post->post_type, $this->config->getApplicablePostTypes())) {
             return false;
         }
 
-        if ( !$this->manager->allAccountSettingsAreEntered() ) {
+        if (!$this->manager->allAccountSettingsAreEntered()) {
+            return false;
+        }
+
+        if ($this->articleIsSetToOpenToAll()) {
             return false;
         }
 
         return true;
+    }
+
+    private function articleIsSetToOpenToAll()
+    {
+        if ($this->manager->globalSettingsAreActive() && !$this->hasMetaOverride() && $this->manager->getPaywallEligibilityCheckBehavior() === Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL) {
+            return true;
+        }
+
+        if ($this->hasMetaOverride() && $this->getPaywallEligibilityCheckBehavior() === Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -141,81 +173,94 @@ class Article {
      * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
      * @throws Exception
      */
-    public function addArticleMetaHeader() {
-        if ( $this->manager->isTrendingArticleActive() ) {
+    public function addArticleMetaHeader()
+    {
+        if ($this->manager->isTrendingArticleActive()) {
             echo '<meta name="tollbridge:track" content="true" />';
         }
 
-        if ( !$this->isEligibleToShowPaywall() ) {
+        if (!$this->isEligibleToShowPaywall()) {
             return;
         }
 
-        if ( $this->userCanBypassPaywall() ) {
+        if ($this->userCanBypassPaywall()) {
             return;
         }
 
-        if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
-            require_once plugin_dir_path( __DIR__ ) . '/../views/amp/config.php';
+        if (function_exists('amp_is_request') && amp_is_request()) {
+            require_once plugin_dir_path(__DIR__) . '/../views/amp/config.php';
         } else {
             global $post;
 
-            $plans = $this->manager->getApplicablePlans( $post );
+            $this->setId($post->ID);
 
-            if ( empty( $plans ) ) {
+            if ($this->manager->allowAllLoggedInUsers($post)) {
+                echo '<meta name="tollbridge:allow" content="loggedIn"/>';
+            }
+            $plans = $this->manager->getApplicablePlans($post);
+
+            if (empty($plans)) {
                 return;
             }
 
-            echo '<meta name="tollbridge:plan" content="' . implode( ',', array_column( $plans, 'id' ) ) . '"/>';
+            echo '<meta name="tollbridge:plan" content="' . implode(',', array_column($plans, 'id')) . '"/>';
         }
     }
 
     /**
      * @throws Exception
      */
-    public function addArticleBodyOpenCode() {
+    public function addArticleBodyOpenCode()
+    {
         $this->bodyOpenWasTriggered = true;
 
-        if ( !$this->isEligibleToShowPaywall() ) {
+        if (!$this->isEligibleToShowPaywall()) {
             return;
         }
 
-        if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
-            if ( $this->manager->getPaywallTemplate() == 'inline' ) {
+        if (function_exists('amp_is_request') && amp_is_request()) {
+            if ($this->manager->getPaywallTemplate() == 'inline') {
                 $this->bodyOpenWasTriggered = false;
             }
 
-            require_once plugin_dir_path( __DIR__ ) . '/../views/amp/widgets.php';
+            require_once plugin_dir_path(__DIR__) . '/../views/amp/widgets.php';
         } else {
             global $post;
 
-            $plans = $this->manager->getApplicablePlans( $post );
+            $plans = $this->manager->getApplicablePlans($post);
 
-            if ( empty( $plans ) ) {
+            if (empty($plans)) {
                 return;
             }
 
-            require_once plugin_dir_path( __DIR__ ) . '/../views/frontend/js-payload.php';
+            require_once plugin_dir_path(__DIR__) . '/../views/frontend/js-payload.php';
         }
     }
 
-    public function addArticleBodyContentCode( $content ) {
+    public function addArticleBodyContentCode($content)
+    {
         // The wp_open_body hook is supported in this theme, and we've fired it already, no
         // more work required!
-        if ( $this->bodyOpenWasTriggered ) {
+        if ($this->bodyOpenWasTriggered) {
             return $content;
         }
 
         ob_start();
 
-        if ( function_exists( 'amp_is_request' ) && amp_is_request() ) {
-            require_once plugin_dir_path( __DIR__ ) . '/../views/amp/view.php';
+        if (function_exists('amp_is_request') && amp_is_request()) {
+            require_once plugin_dir_path(__DIR__) . '/../views/amp/view.php';
 
             return '';
         }
 
-        require_once plugin_dir_path( __DIR__ ) . '/../views/frontend/js-payload.php';
+        require_once plugin_dir_path(__DIR__) . '/../views/frontend/js-payload.php';
         $payload = ob_get_clean();
 
         return $payload . $content;
+    }
+
+    public function getPaywallEligibilityCheckBehavior()
+    {
+        return intval(trim($this->meta['tollbridge_paywall_eligibility_check_behaviour']) ?? Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS);
     }
 }

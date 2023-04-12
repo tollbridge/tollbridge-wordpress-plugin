@@ -5,6 +5,7 @@ namespace Tollbridge\Paywall;
 use Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException;
 use Tollbridge\Paywall\Exceptions\NoPlansExistException;
 use Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException;
+use WP_Error;
 
 /**
  * Handle remote interface with Tollbridge API.
@@ -109,6 +110,10 @@ class Client {
         $response = wp_remote_get( 'https://' . $this->appId . '/api/config', [
             'url' => add_query_arg( $wp->query_vars, home_url() ),
         ] );
+
+        if ( is_wp_error( $response ) ) {
+            throw new ResponseErrorReceivedException( __( 'Error code received from remote server: ', 'tollbridge' ) . $response->get_error_message() );
+        }
 
         if ( $response['response']['code'] != 200 ) {
             throw new ResponseErrorReceivedException( __( 'The Tollbridge server has returned an error', 'tollbridge' ) . ' (' . $response['response']['code'] . '). ' . __( 'Please try again later.', 'tollbridge' ) );

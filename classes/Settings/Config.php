@@ -115,6 +115,18 @@ class Config {
         );
 
         add_settings_field(
+            'tollbridge_paywall_eligibility_check_behaviour',
+            __( 'Paywall Eligibility Check Behavior', 'tollbridge' ),
+            [$this, 'renderPaywallEligibilityRadioOptions'],
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_paywall_config_global'
+        );
+        register_setting(
+            'tollbridge_paywall_paywall_config',
+            'tollbridge_paywall_eligibility_check_behaviour'
+        );
+
+        add_settings_field(
             'tollbridge_plans_with_access',
             __( 'Only grant access to these plans', 'tollbridge' ),
             [$this, 'renderPlanOptions'],
@@ -210,6 +222,33 @@ class Config {
         </fieldset>';
     }
 
+    public function renderPaywallEligibilityRadioOptions() {
+        $manager = new Manager();
+        $tollbridge_paywall_eligibility_check_behaviour = $manager->getPaywallEligibilityCheckBehavior();
+        echo '<fieldset class="tollbridge_global_option">
+            <label>
+                <input type="radio" class="tollbridge_paywall_eligibility_check_behaviour" name="tollbridge_paywall_eligibility_check_behaviour" value="'
+                . Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS .'" ' 
+                . ( $tollbridge_paywall_eligibility_check_behaviour === Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS  ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Only users with selected plans can see article', 'tollbridge' ) . '</span>
+            </label>
+            <br />
+            <label>
+                <input type="radio" class="tollbridge_paywall_eligibility_check_behaviour" name="tollbridge_paywall_eligibility_check_behaviour" value="'
+                . Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL .'" ' 
+                . ( $tollbridge_paywall_eligibility_check_behaviour === Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Anyone can see article', 'tollbridge' ) . '</span>
+            </label>
+            <br />
+            <label>
+            <input type="radio" class="tollbridge_paywall_eligibility_check_behaviour" name="tollbridge_paywall_eligibility_check_behaviour" value="'
+            . Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS .'" ' 
+            . ( $tollbridge_paywall_eligibility_check_behaviour === Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS ? 'checked="checked"' : '' ) . '> '
+                . '<span>' . __( 'Only logged in users can see article', 'tollbridge' ) . '</span>
+            </label>
+        </fieldset>';
+    }
+
     public function renderPlanOptions() {
         $existing_plans = $this->getGlobalPlansWithAccess();
 
@@ -219,12 +258,12 @@ class Config {
             $plans = $manager->getActivePlans();
         } catch ( Exception $e ) {
             echo '<div class="error">' . __( 'Error retrieving plans', 'tollbridge' ) . ':' . $e->getMessage() . '</div>';
-            echo '<fieldset class="tollbridge_global_option"><strong>' . $e->getMessage() . '</strong></fieldset>';
+            echo '<fieldset class="tollbridge_global_option tollbridge_eligibilty_check_behavior_dependent"><strong>' . $e->getMessage() . '</strong></fieldset>';
 
             return;
         }
 
-        $content = '<fieldset class="tollbridge_global_option">';
+        $content = '<fieldset class="tollbridge_global_option tollbridge_eligibilty_check_behavior_dependent">';
 	    $content .= '<a style="margin-right: 1rem" href="javascript:void(0)" onClick="selectAllCheckbox(\'.tollbridge-plans-access\')">Select all</a>';
 	    $content .= '<a href="javascript:void(0)" onClick="unselectAllCheckbox(\'.tollbridge-plans-access\')">Unselect all</a><br>';
 
@@ -272,7 +311,7 @@ class Config {
 
     public function renderTimeAccessChangeOptions() {
         $change = $this->getGlobalTimeAccessChange();
-        echo '<fieldset class="tollbridge_global_option">
+        echo '<fieldset class="tollbridge_global_option tollbridge_eligibilty_check_behavior_dependent">
             <label>
                 <input type="radio" name="tollbridge_time_access_change" value="1" ' . ( $change ? 'checked="checked"' : '' ) . '> '
                 . '<span>' . __( 'Yes', 'tollbridge' ) . '</span>
