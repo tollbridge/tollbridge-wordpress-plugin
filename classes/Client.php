@@ -110,6 +110,10 @@ class Client {
             'url' => add_query_arg( $wp->query_vars, home_url() ),
         ] );
 
+        if ( is_wp_error( $response ) ) {
+            throw new ResponseErrorReceivedException( __( 'Error code received from remote server: ', 'tollbridge' ) . $response->get_error_message() );
+        }
+
         if ( $response['response']['code'] != 200 ) {
             throw new ResponseErrorReceivedException( __( 'The Tollbridge server has returned an error', 'tollbridge' ) . ' (' . $response['response']['code'] . '). ' . __( 'Please try again later.', 'tollbridge' ) );
         }
@@ -162,6 +166,10 @@ class Client {
         }
 
         $response = wp_remote_get( 'https://' . $this->appId . '/api/amp/views' );
+
+        if ( is_wp_error( $response ) ) {
+            throw new ResponseErrorReceivedException( __( 'Error code received from remote server: ', 'tollbridge' ) . $response->get_error_message() );
+        }
 
         if ( $response['response']['code'] != 200 ) {
             throw new ResponseErrorReceivedException( __( 'The Tollbridge server has returned an error', 'tollbridge' ) . ' (' . $response['response']['code'] . '). ' . __( 'Please try again later.', 'tollbridge' ) );
