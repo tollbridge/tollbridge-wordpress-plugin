@@ -5,6 +5,7 @@ namespace Tollbridge\Paywall;
 use Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException;
 use Tollbridge\Paywall\Exceptions\NoPlansExistException;
 use Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException;
+use WP_Error;
 
 /**
  * Handle remote interface with Tollbridge API.
@@ -36,10 +37,10 @@ class Client {
         return self::$instance;
     }
 
-    public function canAttemptConnection() {
+    public function canAttemptConnection(): bool {
         $manager = new Manager();
 
-        if ( !$manager->allAccountSettingsAreEntered() ) {
+        if ( ! $manager->allAccountSettingsAreEntered() ) {
             return false;
         }
 
@@ -51,17 +52,17 @@ class Client {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
      */
     public function getAccessToken() {
-        if ( !$this->canAttemptConnection() ) {
+        if ( ! $this->canAttemptConnection() ) {
             throw new MissingConnectionSettingsException();
         }
 
         $accessToken = wp_cache_get( 'tollbridgeAccessToken', 'tollbridge' );
 
-        if ( !empty( $accessToken ) ) {
+        if ( ! empty( $accessToken ) ) {
             return $accessToken;
         }
 
@@ -93,15 +94,15 @@ class Client {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function getConfig() {
-        if ( !empty( $this->config ) ) {
+        if ( ! empty( $this->config ) ) {
             return $this->config;
         }
 
-        if ( !$this->canAttemptConnection() ) {
+        if ( ! $this->canAttemptConnection() ) {
             throw new MissingConnectionSettingsException();
         }
 
@@ -122,14 +123,14 @@ class Client {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
-     * @throws \Tollbridge\Paywall\Exceptions\NoPlansExistException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
+     * @throws NoPlansExistException
      */
     public function getPlans() {
         $plans = wp_cache_get( 'tollbridgePlans', 'tollbridge' );
 
-        if ( !empty( $plans ) ) {
+        if ( ! empty( $plans ) ) {
             return $plans;
         }
 
@@ -142,7 +143,7 @@ class Client {
         $plans = [];
 
         foreach ( $data['plans'] as $plan ) {
-            $plans[$plan['id']] = $plan['name'];
+            $plans[ $plan['id'] ] = $plan['name'];
         }
 
         wp_cache_set( 'tollbridgePlans', $plans, 'tollbridge', 900 );
@@ -151,17 +152,17 @@ class Client {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function getViews() {
         $views = wp_cache_get( 'tollbridgeViews', 'tollbridge' );
 
-        if ( !empty( $views ) ) {
+        if ( ! empty( $views ) ) {
             return $views;
         }
 
-        if ( !$this->canAttemptConnection() ) {
+        if ( ! $this->canAttemptConnection() ) {
             throw new MissingConnectionSettingsException();
         }
 
