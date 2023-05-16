@@ -12,7 +12,7 @@
  * Plugin Name:       Tollbridge Paywall Management
  * Plugin URI:        https://www.tollbridge.co
  * Description:       Implement Tollbridge paywall on your existing WordPress site.
- * Version:           1.4.0
+ * Version:           1.6.0
  * Author:            Tollbridge.co
  * Author URI:        tollbridge.co
  * License:           GPL-2.0+
@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TOLLBRIDGE_VERSION', '1.4.0' );
+define( 'TOLLBRIDGE_VERSION', '1.6.0' );
 define( 'TOLLBRIDGE_BASE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TOLLBRIDGE_BASE_URL', plugin_dir_url( __FILE__ ) );
 

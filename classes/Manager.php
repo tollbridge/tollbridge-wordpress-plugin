@@ -4,6 +4,9 @@ namespace Tollbridge\Paywall;
 
 use DateTime;
 use Exception;
+use Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException;
+use Tollbridge\Paywall\Exceptions\NoPlansExistException;
+use Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException;
 use Tollbridge\Paywall\Frontend\Article;
 use Tollbridge\Paywall\Settings\Config;
 use WP_Post;
@@ -13,13 +16,13 @@ use WP_Post;
  */
 class Manager {
 
-	const AUTHENTICATION_CALLBACK_SLUG = 'tollbridge-callback';
-    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS = 2;
-    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL = 1;
-    const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS = 0;
+    public const AUTHENTICATION_CALLBACK_SLUG = 'tollbridge-callback';
+    public const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS = 2;
+    public const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL = 1;
+    public const PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS = 0;
 
     /**
-     * @var \Tollbridge\Paywall\Client
+     * @var Client
      */
     private $client;
 
@@ -57,7 +60,7 @@ class Manager {
             $this->getClientSecret(),
         ];
 
-        return count( array_filter( $fields ) ) == 3;
+        return count( array_filter( $fields ) ) === 3;
     }
 
     public function getDefaultConfigBase(): string {
@@ -77,27 +80,27 @@ class Manager {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function getConfig( $key, $default = null ) {
         $config = $this->client->getConfig();
 
-        return array_key_exists( $key, $config ) ? $config[$key] : $default;
+        return array_key_exists( $key, $config ) ? $config[ $key ] : $default;
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
-     * @throws \Tollbridge\Paywall\Exceptions\NoPlansExistException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
+     * @throws NoPlansExistException
      */
     public function getActivePlans() {
         return $this->client->getPlans();
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function isTrendingArticleActive(): bool {
         $config = $this->client->getConfig();
@@ -106,18 +109,18 @@ class Manager {
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function getPaywallTemplate() {
         $config = $this->client->getConfig();
 
-        return array_key_exists( 'paywall_widget_style', $config ) ? $config['paywall_widget_style'] : null;
+        return $config['paywall_widget_style'] ?? null;
     }
 
     /**
-     * @throws \Tollbridge\Paywall\Exceptions\ResponseErrorReceivedException
-     * @throws \Tollbridge\Paywall\Exceptions\MissingConnectionSettingsException
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
      */
     public function getAmpViews() {
         return $this->client->getViews();
@@ -139,14 +142,14 @@ class Manager {
      * @throws Exception
      */
     public function getApplicablePlans( WP_Post $post ): array {
-        if ( !is_null( $this->applicable_plans_cache ) ) {
+        if ( ! is_null( $this->applicable_plans_cache ) ) {
             return $this->applicable_plans_cache;
         }
 
         $article = new Article();
         $article->setId( $post->ID );
 
-        if ( $this->globalSettingsAreActive() && !$article->hasMetaOverride() ) {
+        if ( $this->globalSettingsAreActive() && ! $article->hasMetaOverride() ) {
             $config              = new Config();
             $plans               = $config->getGlobalPlansWithAccess();
             $hasTimeAccessChange = $config->getGlobalTimeAccessChange();
@@ -171,10 +174,10 @@ class Manager {
         $hydratedPlans = [];
 
         foreach ( $plans as $id ) {
-            if ( !empty( $planList[$id] ) ) {
+            if ( ! empty( $planList[ $id ] ) ) {
                 $hydratedPlans[] = [
                     'id'   => $id,
-                    'plan' => $planList[$id],
+                    'plan' => $planList[ $id ],
                 ];
             }
         }
@@ -188,7 +191,7 @@ class Manager {
         $this->applicable_plans_cache = $hydratedPlans;
 
         // No time filters applied? Return now.
-        if ( !$hasTimeAccessChange ) {
+        if ( ! $hasTimeAccessChange ) {
             return $this->applicable_plans_cache;
         }
 
@@ -217,7 +220,7 @@ class Manager {
      * Get the list of user type slugs which are permitted to bypass the paywall.
      */
     public function getUserTypesWithBypass(): array {
-        if ( !is_null( $this->user_types_with_bypass_cache ) ) {
+        if ( ! is_null( $this->user_types_with_bypass_cache ) ) {
             return $this->user_types_with_bypass_cache;
         }
 
@@ -231,22 +234,57 @@ class Manager {
         return get_option( 'tollbridge_is_using_global_rules', false );
     }
 
-    public function getPaywallEligibilityCheckBehavior() {
-        return intval(
-            get_option(
-                'tollbridge_paywall_eligibility_check_behaviour',
-                self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS)
-        );
-    }
-
-    public function allowAllLoggedInUsers(WP_Post $post) : bool {
+    public function disableLeakyPaywall( WP_Post $post ): bool {
         $article = new Article();
         $article->setId( $post->ID );
 
-        if ( $this->globalSettingsAreActive() && !$article->hasMetaOverride() ) {
+        return $article->hasMetaOverride() && $article->isDisableLeakyPaywall();
+    }
+
+    /**
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
+     */
+    public function getPaywallTitle( WP_Post $post = null ): string {
+        if ( $post ) {
+            $article = new Article();
+            $article->setId( $post->ID );
+
+            return $article->getPaywallTitle();
+        }
+
+        return $this->getConfig( 'paywall_widget_title' );
+    }
+
+    /**
+     * @throws ResponseErrorReceivedException
+     * @throws MissingConnectionSettingsException
+     */
+    public function getPaywallBody( WP_Post $post = null ): string {
+        if ( $post ) {
+            $article = new Article();
+            $article->setId( $post->ID );
+
+            return $article->getPaywallBody();
+        }
+
+        return $this->getConfig( 'paywall_widget_body' );
+    }
+
+    public function getPaywallEligibilityCheckBehavior(): int {
+        return (int) get_option(
+            'tollbridge_paywall_eligibility_check_behaviour',
+            self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS );
+    }
+
+    public function allowAllLoggedInUsers( WP_Post $post ): bool {
+        $article = new Article();
+        $article->setId( $post->ID );
+
+        if ( $this->globalSettingsAreActive() && ! $article->hasMetaOverride() ) {
             return $this->getPaywallEligibilityCheckBehavior() === self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS;
-        } 
-            
+        }
+
         return $article->getPaywallEligibilityCheckBehavior() === self::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ONLY_LOGGED_IN_USERS;
     }
 }
