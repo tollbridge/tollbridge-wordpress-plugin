@@ -105,6 +105,38 @@ class Article {
         return $this->meta['tollbridge_time_access_change_direction'];
     }
 
+    public function isDisableLeakyPaywall(): bool {
+        if ( !isset( $this->meta['tollbridge_disable_leaky_paywall'] ) ) {
+            $this->meta['tollbridge_disable_leaky_paywall'] = false;
+        }
+
+        return (bool) $this->meta['tollbridge_disable_leaky_paywall'];
+    }
+
+    public function isChangeMessagePaywall(): bool {
+        if ( !isset( $this->meta['tollbridge_change_message_paywall'] ) ) {
+            $this->meta['tollbridge_change_message_paywall'] = false;
+        }
+
+        return (bool) $this->meta['tollbridge_change_message_paywall'];
+    }
+
+    public function getPaywallTitle(): string {
+        if ( !isset( $this->meta['tollbridge_message_paywall_title'] ) ) {
+            $this->meta['tollbridge_message_paywall_title'] = '';
+        }
+
+        return $this->meta['tollbridge_message_paywall_title'];
+    }
+
+    public function getPaywallBody(): string {
+        if ( !isset( $this->meta['tollbridge_message_paywall_body'] ) ) {
+            $this->meta['tollbridge_message_paywall_body'] = '';
+        }
+
+        return $this->meta['tollbridge_message_paywall_body'];
+    }
+
     private function userCanBypassPaywall(): bool {
         if ( !is_user_logged_in() ) {
             return false;

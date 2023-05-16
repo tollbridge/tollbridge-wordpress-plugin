@@ -3,6 +3,7 @@
  * JS Payload, to be output near the top of the <body> tag.
  */
 $manager = new \Tollbridge\Paywall\Manager();
+global $post;
 
 if ($manager->allAccountSettingsAreEntered()) {
     ?>
@@ -11,7 +12,11 @@ if ($manager->allAccountSettingsAreEntered()) {
         app-id="<?php echo $manager->getAppId(); ?>"
         client-id="<?php echo $manager->getClientId(); ?>"
         config-base="<?php echo $manager->getConfigBase(); ?>"
-        callback-url="<?php echo $manager->getCallbackUrl(); ?>"></tollbridge-config>
+        callback-url="<?php echo $manager->getCallbackUrl(); ?>"
+        <?php if ($manager->disableLeakyPaywall($post)): ?>
+        type="hard"
+        <?php endif; ?>
+    ></tollbridge-config>
     <?php
 }
 ?>

@@ -1,11 +1,5 @@
-var listen = document.querySelectorAll('[name=\'tollbridge_time_access_change\']');
+var listen = document.querySelectorAll("[name='tollbridge_time_access_change']");
 if (listen.length) {
-    listen.forEach(function (node) {
-        node.addEventListener('click', function (event) {
-            toggleTimeVisibility((this.value == 0));
-        });
-    });
-
     // Any global settings need hiding?
     var globalDependent = document.querySelectorAll('.tollbridge_global_option');
     globalDependent.forEach(function (item) {
@@ -15,19 +9,19 @@ if (listen.length) {
         }
     });
 
-    if (document.querySelector('[name="tollbridge_is_using_global_rules"]:checked')) {
-        if (document.querySelector('[name="tollbridge_is_using_global_rules"]:checked').value != '1') {
-            toggleGlobalDependencies(true);
-        }
-    }
-    document.querySelectorAll('.tollbridge_global_radio').forEach(function (item) {
-        item.addEventListener('click', function (event) {
-            toggleGlobalDependencies(this.value != 1);
-        });
-    });
-
     function toggleGlobalDependencies(hide) {
         var dependents = document.querySelectorAll('.tollbridge_global_option');
+        dependents.forEach(function (item) {
+            if (hide) {
+                item.classList.add('hidden');
+            } else {
+                item.classList.remove('hidden');
+            }
+        });
+    }
+
+    function toggleGlobalPostDependencies(hide) {
+        var dependents = document.querySelectorAll('.tollbridge-override-settings');
         dependents.forEach(function (item) {
             if (hide) {
                 item.classList.add('hidden');
@@ -47,14 +41,34 @@ if (listen.length) {
             }
         });
     }
+
+    function togglePaywallTextVisibility(hide) {
+        var items = document.querySelectorAll('.tollbridge_change_message_paywall');
+        items.forEach(function (node) {
+            if (hide) {
+                node.classList.add('hidden');
+            } else {
+                node.classList.remove('hidden');
+            }
+        });
+    }
+
+    var toggleRadio = function (toggleInput, toggleMethod) {
+        if (document.querySelector('[name="' + toggleInput + '"]:checked')) {
+            toggleMethod(document.querySelector('[name="' + toggleInput + '"]:checked').value == 0);
+        }
+        document.querySelectorAll('[name="' + toggleInput + '"]').forEach(function (item) {
+            item.addEventListener('click', function (event) {
+                toggleMethod(this.value == 0);
+            });
+        });
+    }
+
+    toggleRadio('tollbridge_is_using_global_rules', toggleGlobalDependencies);
+    toggleRadio('tollbridge_override_global_rules', toggleGlobalPostDependencies);
+    toggleRadio('tollbridge_time_access_change', toggleTimeVisibility);
+    toggleRadio('tollbridge_change_message_paywall', togglePaywallTextVisibility);
 }
-
-
-document.querySelectorAll('[name="tollbridge_override_global_rules"]').forEach(function (item) {
-    item.addEventListener('click', function (event) {
-        document.querySelector('.tollbridge-override-settings').classList.toggle('hidden');
-    });
-});
 
 const selectAllCheckbox = (selector) => {
     let checkboxes = document.querySelectorAll(selector);

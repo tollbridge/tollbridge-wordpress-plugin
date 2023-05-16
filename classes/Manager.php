@@ -227,4 +227,33 @@ class Manager {
     public function globalSettingsAreActive() {
         return get_option( 'tollbridge_is_using_global_rules', false );
     }
+
+    public function disableLeakyPaywall( WP_Post $post ): bool {
+        $article = new Article();
+        $article->setId( $post->ID );
+
+        return $article->hasMetaOverride() && $article->isDisableLeakyPaywall();
+    }
+
+    public function getPaywallTitle( WP_Post $post = null ): string {
+        if ($post) {
+            $article = new Article();
+            $article->setId( $post->ID );
+
+            return $article->getPaywallTitle();
+        }
+
+        return $this->getConfig('paywall_widget_title');
+    }
+
+    public function getPaywallBody(WP_Post $post = null ): string {
+        if ($post) {
+            $article = new Article();
+            $article->setId( $post->ID );
+
+            return $article->getPaywallBody();
+        }
+
+        return $this->getConfig('paywall_widget_body');
+    }
 }
