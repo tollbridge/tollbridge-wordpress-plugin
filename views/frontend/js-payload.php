@@ -7,7 +7,7 @@ global $post;
 
 if ( $manager->allAccountSettingsAreEntered() ) {
     ?>
-    <script type="text/javascript" src="https://<?php echo $manager->getAppId(); ?>/js/tollbridge.js"></script>
+    <script type="text/javascript" src="https://cdn.tollbridge.co/tollbridge.min.js"></script>
     <tollbridge-config
         app-id="<?php echo $manager->getAppId(); ?>"
         client-id="<?php echo $manager->getClientId(); ?>"
