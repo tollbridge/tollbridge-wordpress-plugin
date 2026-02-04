@@ -2,8 +2,8 @@
 Contributors: conroyp
 Tags: publisher
 Requires at least: 5.2.0
-Tested up to: 5.6.1
-Stable tag: 1.6.0
+Tested up to: 5.9.0
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,5 +38,54 @@ AMP pages are not currently supported by the Tollbridge platform.
 
 == Changelog ==
 
-= 1.0 =
-* Initial release.
+= 1.7.1 =
+* Add comprehensive CLAUDE.md documentation file for AI assistance
+* Add CHANGELOG.md for better version tracking
+* Update README.txt with complete changelog history
+* Improve project documentation and developer onboarding
+
+= 1.7.0 =
+* Migrate to Tollbridge CDN reference for JS payload
+
+= 1.6.0 =
+* Handle logged-in and free configuration options
+* Improve error handling for config API responses
+* Catch WP_Error from remote API calls
+
+= 1.5.0 =
+* Introduce subscription disabling capability
+
+= 1.4.0 =
+* Fix admin menu styling issues
+* Improve CSS rendering
+
+= 1.3.1 =
+* Fix admin menu style bug
+
+= 1.3.0 =
+* Add ability to change config-base URL for custom Tollbridge environments
+
+= 1.2.0 =
+* Fix empty request data not being saved properly
+* Fix inline paywall rendering on AMP views
+* Fix paywall application on WordPress pages (not just posts)
+* Add support for toggling trending articles tracking
+* Add adaptive/dynamic paywall support
+* Implement PHP CS Fixer with WordPress coding standards
+* Fix missing AMP methods hotfix
+
+= 1.1.0 =
+* Adaptive Paywall: Dynamic paywall configuration based on user behavior
+* Article Tracking: Log and track article views for analytics
+
+= 1.0.0 =
+* Full internationalization support with Spanish and French translations
+* Complete AMP (Accelerated Mobile Pages) integration
+* OAuth callback handling via custom rewrite rules
+* Global paywall settings with per-article override capability
+* User role bypass functionality
+* Plan-based access control
+* Support for multiple post types
+* Time-based access control (paid-to-free and free-to-paid)
+* Integration with Tollbridge API for plan management
+* Initial release
