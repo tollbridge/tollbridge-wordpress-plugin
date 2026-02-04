@@ -6,6 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a WordPress plugin that integrates Tollbridge.co paywall functionality into WordPress sites. The plugin allows publishers to control article access based on user subscriptions, with support for global or per-article configuration.
 
+## Maintainers
+
+- **Paul Conroy** (@conroyp) - Original author
+- **Jose Vicente Orts Romero** (@josrom) - Current maintainer
+
 ## Architecture
 
 ### Core Bootstrap Flow
@@ -142,6 +147,10 @@ Users install this as a WordPress plugin (upload ZIP or place in wp-content/plug
 Plugin includes AMP detection and special rendering via `amp_is_request()` function. AMP-specific templates are in `views/amp/` directory.
 
 ## Changelog
+
+### Version 1.7.2 - February 2026
+- Fix paywall eligibility check behavior default value handling in Article.php
+- Improve null coalescing operator logic for meta field retrieval
 
 ### Version 1.7.1 - February 2026
 - Add comprehensive CLAUDE.md documentation file for AI assistance

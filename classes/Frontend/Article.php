@@ -279,6 +279,10 @@ class Article {
     }
 
     public function getPaywallEligibilityCheckBehavior(): int {
-        return (int) ( trim( $this->meta['tollbridge_paywall_eligibility_check_behaviour'] ) ?? Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS );
+        return (int) ( trim(
+                           $this->meta['tollbridge_paywall_eligibility_check_behaviour'] ??
+                           Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_ALL
+                       ) ??
+                       Manager::PAYWALL_ELIGIBILITY_BEHAVIOR_OPEN_TO_USERS_WITH_CONFIGURED_PLANS );
     }
 }

@@ -2,6 +2,10 @@
 
 All notable changes to the Tollbridge WordPress Plugin are documented in this file.
 
+## [1.7.2] - 2026-02-04
+- Fix paywall eligibility check behavior default value handling in Article.php
+- Improve null coalescing operator logic for meta field retrieval
+
 ## [1.7.1] - 2026-02-04
 - Add comprehensive CLAUDE.md documentation file for AI assistance
 - Add CHANGELOG.md for better version tracking

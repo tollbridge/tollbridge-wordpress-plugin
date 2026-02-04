@@ -67,7 +67,7 @@ class Runner {
         if ( defined( 'TOLLBRIDGE_VERSION' ) ) {
             $this->version = TOLLBRIDGE_VERSION;
         } else {
-            $this->version = '1.7.1';
+            $this->version = '1.7.2';
         }
         $this->plugin_name = 'tollbridge-paywall';
 

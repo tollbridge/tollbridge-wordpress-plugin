@@ -1,9 +1,9 @@
 === Plugin Name ===
-Contributors: conroyp
+Contributors: conroyp, josrom
 Tags: publisher
 Requires at least: 5.2.0
 Tested up to: 5.9.0
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,10 @@ AMP pages are not currently supported by the Tollbridge platform.
 
 
 == Changelog ==
+
+= 1.7.2 =
+* Fix paywall eligibility check behavior default value handling
+* Improve null coalescing operator logic for meta field retrieval
 
 = 1.7.1 =
 * Add comprehensive CLAUDE.md documentation file for AI assistance
